@@ -1,14 +1,39 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <ion-navbar padding>
+    <ion-buttons>
+      <button ion-button icon-only (click)="logout()"><ion-icon name="power" class="navbar-logo"></ion-icon></button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="loadDb()"><ion-icon name="cloud-upload" class="navbar-logo"></ion-icon></button>
+      <button ion-button icon-only (click)="toProfilePage()"><ion-icon name="person" class="navbar-logo"></ion-icon></button>
+      <button ion-button icon-only (click)="toOptionPage()"><ion-icon name="options" class="navbar-logo"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+  <div><p class="title">Por favor inicie su actividad</p></div>
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 align="center">
+          <ion-card button class="icon_card_button" *ngIf="!disabled_sa" color="primary" (click)="toJumpPage()">
+            <img class="image1" src="./assets/imgs/jump.jpg" width="30px">
+          </ion-card>
+          <p class="text">Saltos</p>
+        </ion-col>
+        <ion-col col-6 align="center">
+          <ion-card button class="icon_card_button" *ngIf="!disabled_ab" color="primary" (click)="toABSPage()">
+            <img class="image2" src="./assets/imgs/ABS.jpg" width="30px">
+          </ion-card>
+          <p class="text">Abdominales</p>
+        </ion-col>
+        <ion-col col-12 align="center">
+          <ion-card  button class="icon_card_button" *ngIf="!disabled_ca" color="primary" (click)="toStepsPage()">
+            <img align="center" class="image3" src="./assets/imgs/caminata.jpg" width="30px">
+          </ion-card>
+          <p class="text">Caminata</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
 </ion-content>
