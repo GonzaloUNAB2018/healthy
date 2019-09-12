@@ -42,9 +42,11 @@ import { InitialPageModule } from '../pages/initial/initial.module';
 import { CaminataPageModule } from '../pages/caminata/caminata.module';
 import { SaltosPageModule } from '../pages/saltos/saltos.module';
 import { AbdominalesPageModule } from '../pages/abdominales/abdominales.module';
+import { HealthStatusResumePageModule } from '../pages/health-status-resume/health-status-resume.module';
 import { ConfigurationPageModule } from '../pages/configuration/configuration.module';
 import { LoadDatabasePageModule } from '../pages/load-database/load-database.module';
 import { ProfilePageModule } from '../pages/profile/profile.module';
+import { GoogleFitProvider } from '../providers/google-fit/google-fit';
 
 
 
@@ -70,6 +72,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
     ConfigurationPageModule,
     LoadDatabasePageModule,
     ProfilePageModule,
+    HealthStatusResumePageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     ProgressBarModule
@@ -96,7 +99,8 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
     Stepcounter,
     AnguarFireProvider,
     BackgroundMode,
-    Health
+    Health,
+    GoogleFitProvider
   ]
 })
 export class AppModule {}

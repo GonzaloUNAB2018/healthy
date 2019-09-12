@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { Stepcounter } from '@ionic-native/stepcounter';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @IonicPage()
 @Component({
@@ -38,6 +39,8 @@ export class CaminataPage {
     private geolocation: Geolocation,
     private stepsDbService: StepsDbProvider,
     private stepcounter: Stepcounter,
+    private platform: Platform,
+    private backgroundMode: BackgroundMode,
     ) {
 
       this.stepcounter.deviceCanCountSteps().then(data=>{
@@ -72,7 +75,7 @@ export class CaminataPage {
   }
 
   ionViewWillLeave(){
-    
+    this.stopAll();
   }
 
   countDown(){
@@ -90,12 +93,9 @@ export class CaminataPage {
 
   stopCountDown(){
     clearInterval(this.cdown);
-    //this.stopSteps();
   }
 
   start() {
-    //Inicia Cronómetro;
-    //this.time = '00:00'
     this.interval = window.setInterval(() => {
       this.seconds++;
       this.time = this.getTimeFormatted();
@@ -109,6 +109,7 @@ export class CaminataPage {
       });
       console.log(this.lat, this.lng)
     }, 1000);
+    this.bgNotify();
   }
 
   initSteps(){
@@ -133,6 +134,7 @@ export class CaminataPage {
     window.clearInterval(this.dataInterval);
     this.seconds = 0;
     this.stopSteps();
+    this.stopNotify();
   }
 
   getTimeFormatted() {
@@ -166,7 +168,7 @@ export class CaminataPage {
 
   stopSteps(){
     this.loadStopGetData();
-    this.stepcounter.stop()
+    this.stepcounter.stop();
   }
 
   toHomePage(){
@@ -232,6 +234,31 @@ export class CaminataPage {
       this.steps_tasks.unshift( data_steps );
       console.table(this.steps_tasks);
     })
+  }
+
+  bgNotify(){
+    this.backgroundMode.setDefaults({
+      title: '¡Caminando!',
+      text: ''+this.time+' Presione notificación para continuar',
+      color: 'primary',
+      hidden: false,
+      bigText: true,
+    });
+    if(this.platform.is('cordova')){
+      this.backgroundMode.enable();
+      console.log('Background Mode está habilitado');
+      if(this.backgroundMode.isEnabled()){
+        console.log('Notificando');
+      }else{
+        console.log('No notificando');
+      }
+    }
+  }
+
+  stopNotify(){
+    if(this.platform.is('cordova')){
+      this.backgroundMode.disable();
+    }
   }
 
 }

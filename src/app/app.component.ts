@@ -41,15 +41,25 @@ export class MyApp {
       
       this.platform.ready().then(() => {
         this.statusBar.styleDefault();
+        /*this.backgroundMode.setDefaults({
+          title: 'Healthy está activado!',
+          text: 'Presione notificación para continuar',
+          color: 'primary',
+          hidden: false,
+          bigText: true,
+
+          
+        });
         if(this.platform.is('cordova')){
           this.backgroundMode.enable();
           console.log('Background Mode está habilitado');
           if(this.backgroundMode.isEnabled()){
+            
             console.log('Notificando');
           }else{
             console.log('No notificando');
           }
-        }
+        }*/
         
         this.createDatabase();
         this.afAuth.auth.onAuthStateChanged(user=>{

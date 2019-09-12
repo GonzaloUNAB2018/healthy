@@ -14,7 +14,9 @@ import { AbdominalesPage } from '../abdominales/abdominales';
 import { User } from '../../models/user';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { ProfilePage } from '../profile/profile';
-import { Health } from '@ionic-native/health';
+import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
+import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
+//import { Health } from '@ionic-native/health';
 
 
 @Component({
@@ -57,7 +59,8 @@ export class HomePage {
   uid: any;
 
   requiereUpdate: any;
-  versionApp = '0.0.9.2'
+  versionApp = '0.1.0.2';
+  health : boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -70,7 +73,8 @@ export class HomePage {
     public jumpDbService: JumpDbProvider,
     public sqlite: SQLite,
     public afProvider: AnguarFireProvider,
-    private health: Health,
+    public googleFitProvider: GoogleFitProvider,
+    //private health: Health,
     //private afDb: AngularFireDatabase,
     ) {
       
@@ -87,22 +91,23 @@ export class HomePage {
     }
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
-      if(this.requiereUpdate.requiere==='0.0.9.2'){
+      if(this.requiereUpdate.requiere==='0.1.0.2'){
         console.log('No requiere actualizar');
-        this.health.isAvailable()
-        .then((available:boolean) => {
-          console.log(available);
-          this.health.requestAuthorization([
-            'distance', 'nutrition',  //read and write permissions
-            {
-              read: ['steps'],       //read only permission
-              write: ['height', 'weight']  //write only permission
-            }
-          ])
-          .then(res => console.log(res))
-          .catch(e => console.log(e));
+        this.googleFitProvider.accesToHealth()
+        .then(available=>{
+          if(available){
+            this.health=true;
+            this.googleFitProvider.getPermissionToHealthData();
+          }else{
+            this.health=false;
+          }
         })
-        .catch(e => console.log(e));
+        .then(()=>{
+          console.log(this.health)
+        }).catch(e=>{
+          console.log(e);
+          alert(e)
+        })
       }else{
         this.requiereUpdateAppFunction()
       }
@@ -162,6 +167,10 @@ export class HomePage {
     this.navCtrl.push(ProfilePage);
   }
 
+  toHealthPage(){
+    this.navCtrl.push(HealthStatusResumePage, {health:this.health})
+  }
+
   toStepsPage(){
     this.navCtrl.push(CaminataPage);
   }
@@ -214,7 +223,7 @@ export class HomePage {
         {
           text: 'OK',
           handler: () => {
-            window.open("https://github.com/GonzaloUNAB2018/WalkWithMe/tree/master/apk");
+            window.open("https://github.com/GonzaloUNAB2018/healthy/tree/master/apk");
           }
         }
       ]
