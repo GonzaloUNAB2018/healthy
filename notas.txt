@@ -1,0 +1,20 @@
+PS C:\Program Files\Java\jdk1.8.0_221\bin> ./keytool -list -v -keystore "C:\Users\gorel\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+Nombre de Alias: androiddebugkey
+Fecha de Creación: 04-09-2019
+Tipo de Entrada: PrivateKeyEntry
+Longitud de la Cadena de Certificado: 1
+Certificado[1]:
+Propietario: C=US, O=Android, CN=Android Debug
+Emisor: C=US, O=Android, CN=Android Debug
+Número de serie: 1
+Válido desde: Wed Sep 04 21:49:20 CLT 2019 hasta: Fri Aug 27 21:49:20 CLT 2049
+Huellas digitales del certificado:
+         MD5: C1:08:57:FC:7B:90:07:CF:E8:78:CE:D0:A8:A6:F5:4B
+         SHA1: D5:29:96:28:F8:ED:5B:89:08:07:37:2B:EB:F8:D2:BC:95:8E:F6:FC
+         SHA256: F5:6D:D1:D0:2D:0A:C1:95:BF:EA:5A:91:B7:00:7C:11:68:0C:5C:FD:89:30:1C:93:BA:C3:29:7D:54:8A:E4:EE
+Nombre del algoritmo de firma: SHA1withRSA
+Algoritmo de clave pública de asunto: Clave RSA de 2048 bits
+Versión: 1
+
+Warning:
+El almacén de claves JKS utiliza un formato propietario. Se recomienda migrar a PKCS12, que es un formato estándar del sector que utiliza "keytool -importkeystore -srckeystore C:\Users\gorel\.android\debug.keystore -destkeystore C:\Users\gorel\.android\debug.keystore -deststoretype pkcs12".

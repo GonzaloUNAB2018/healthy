@@ -14,7 +14,7 @@ import { AbdominalesPage } from '../abdominales/abdominales';
 import { User } from '../../models/user';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { ProfilePage } from '../profile/profile';
-//import { Health } from '@ionic-native/health';
+import { Health } from '@ionic-native/health';
 
 
 @Component({
@@ -70,7 +70,7 @@ export class HomePage {
     public jumpDbService: JumpDbProvider,
     public sqlite: SQLite,
     public afProvider: AnguarFireProvider,
-    //private health: Health,
+    private health: Health,
     //private afDb: AngularFireDatabase,
     ) {
       
@@ -89,7 +89,7 @@ export class HomePage {
       this.requiereUpdate = requiereUpdate;
       if(this.requiereUpdate.requiere==='0.0.9.2'){
         console.log('No requiere actualizar');
-        /*this.health.isAvailable()
+        this.health.isAvailable()
         .then((available:boolean) => {
           console.log(available);
           this.health.requestAuthorization([
@@ -102,7 +102,7 @@ export class HomePage {
           .then(res => console.log(res))
           .catch(e => console.log(e));
         })
-        .catch(e => console.log(e));*/
+        .catch(e => console.log(e));
       }else{
         this.requiereUpdateAppFunction()
       }
