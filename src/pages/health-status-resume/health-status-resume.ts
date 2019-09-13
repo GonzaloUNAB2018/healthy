@@ -74,7 +74,7 @@ export class HealthStatusResumePage {
     this.googleFitProvider.getHeartRateFromHealth().then(heart_rates =>{
       this.heart_rates = heart_rates;
       //console.log(this.heart_rates);
-      return this.heart_rates.filter(e=>e !== 'GMT-0300 (hora de verano de Chile)');
+      this.heart_rates = this.heart_rates.filter(e=>e !== 'GMT-0300 (hora de verano de Chile)');
     })
   }
 
