@@ -172,15 +172,15 @@ export class HomePage {
   }
 
   toStepsPage(){
-    this.navCtrl.push(CaminataPage);
+    this.navCtrl.setRoot(CaminataPage);
   }
 
   toJumpPage(){
-    this.navCtrl.push(SaltosPage);
+    this.navCtrl.setRoot(SaltosPage);
   }
 
   toABSPage(){
-    this.navCtrl.push(AbdominalesPage);
+    this.navCtrl.setRoot(AbdominalesPage);
   }
 
   

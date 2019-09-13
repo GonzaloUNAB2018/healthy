@@ -5,5 +5,11 @@
   <p class="text">Total cal gastadas últimos 3 días: {{total_calories}}</p>
   <p class="text">Total pasos dados últimos 3 días: {{total_steps}}</p>
 
+  <ion-list *ngIf="heart_rates">
+    <ion-item *ngFor="let heart_rate of heart_rates">
+      <p class="text2">{{ heart_rate.endDate }} - {{ heart_rate.value }} {{ heart_rate.unit }}</p>
+    </ion-item>
+  </ion-list>
+
   
 </ion-content>

@@ -15,6 +15,8 @@ export class HealthStatusResumePage {
   total_calories: number = 0;
   steps: any[];
   total_steps: number = 0;
+  heart_rates: any[];
+  date_heart_rates: string;
 
   constructor(
     public navCtrl: NavController,
@@ -68,7 +70,18 @@ export class HealthStatusResumePage {
         console.log(this.steps[st].value);
         this.total_steps = this.total_steps+this.steps[st].value;
       }
+    });
+    this.googleFitProvider.getHeartRateFromHealth().then(heart_rates =>{
+      this.heart_rates = heart_rates;
+      //console.log(this.heart_rates);
+      return this.heart_rates.filter(e=>e !== 'GMT-0300 (hora de verano de Chile)');
     })
   }
 
 }
+
+
+//"Hello, this is Mike (example)".replace(/ *\([^)]*\) */g, "");
+
+//Result
+//"Hello, this is Mike"

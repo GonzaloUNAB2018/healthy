@@ -66,4 +66,13 @@ export class GoogleFitProvider {
     })
   }
 
+  public getHeartRateFromHealth(){
+    return this.health.query({
+      startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
+      endDate: new Date(), // now
+      dataType: 'heart_rate',
+      limit: 1000
+    })
+  }
+
 }

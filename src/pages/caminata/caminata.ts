@@ -4,6 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { Stepcounter } from '@ionic-native/stepcounter';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,7 @@ export class CaminataPage {
   private dataInterval: any;
   private seconds: number = 0;
   public time: string = '00:00';
+  public bg_time: string = '00:00';
   public showSeconds: boolean = true;
   cdown_ok: boolean;
   cdown: any;
@@ -31,6 +33,7 @@ export class CaminataPage {
   date: string;
   hour: string;
   stepSensorTrue: string;
+  formatted_time: string = '00:00';
 
   constructor(
     public navCtrl: NavController,
@@ -69,13 +72,9 @@ export class CaminataPage {
     this.stop();
     this.loadStopGetData();
     setTimeout(()=>{
-      this.navCtrl.pop()
+      this.navCtrl.setRoot(HomePage)
     },500)
     
-  }
-
-  ionViewWillLeave(){
-    this.stopAll();
   }
 
   countDown(){
@@ -107,9 +106,32 @@ export class CaminataPage {
         this.alt = co.coords.altitude;
         this.speed = co.coords.speed
       });
-      console.log(this.lat, this.lng)
+      this.backgroundMode.configure({
+        title: '¡Caminando!',
+        text: this.time+' Presione notificación para continuar',
+        color: 'primary',
+        hidden: false,
+        bigText: true,
+      });
     }, 1000);
     this.bgNotify();
+  }
+
+  bgNotify(){
+    
+    if(this.platform.is('cordova')){
+      this.backgroundMode.enable();
+      if(this.backgroundMode.isEnabled()){
+        this.backgroundMode.on('enable')
+      }else{
+      }
+    }
+  }
+
+  stopNotify(){
+    if(this.platform.is('cordova')){
+      this.backgroundMode.disable();
+    }
   }
 
   initSteps(){
@@ -155,15 +177,15 @@ export class CaminataPage {
       seconds_st = "0" + seconds.toString();
     }
 
-    var formatted_time = '0';
+    this.formatted_time = '0';
     if (hours > 0) {
-      formatted_time += hours_st + ':';
+      this.formatted_time += hours_st + ':';
     }
-    formatted_time += minutes_st;
+    this.formatted_time += minutes_st;
     if (this.showSeconds) {
-      formatted_time += ':' + seconds_st;
+      this.formatted_time += ':' + seconds_st;
     }
-    return formatted_time;
+    return this.formatted_time;
   }
 
   stopSteps(){
@@ -234,31 +256,6 @@ export class CaminataPage {
       this.steps_tasks.unshift( data_steps );
       console.table(this.steps_tasks);
     })
-  }
-
-  bgNotify(){
-    this.backgroundMode.setDefaults({
-      title: '¡Caminando!',
-      text: ''+this.time+' Presione notificación para continuar',
-      color: 'primary',
-      hidden: false,
-      bigText: true,
-    });
-    if(this.platform.is('cordova')){
-      this.backgroundMode.enable();
-      console.log('Background Mode está habilitado');
-      if(this.backgroundMode.isEnabled()){
-        console.log('Notificando');
-      }else{
-        console.log('No notificando');
-      }
-    }
-  }
-
-  stopNotify(){
-    if(this.platform.is('cordova')){
-      this.backgroundMode.disable();
-    }
   }
 
 }

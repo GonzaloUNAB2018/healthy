@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
 import { DeviceMotion, DeviceMotionAccelerationData } from '@ionic-native/device-motion';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -28,10 +30,13 @@ export class SaltosPage {
 
   constructor(
     public navCtrl: NavController, 
+    public platform: Platform,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     private jumpsDbService: JumpDbProvider,
     private deviceMotion: DeviceMotion,
+    private backgroundMode: BackgroundMode
+
     ) {
 
       
@@ -42,7 +47,7 @@ export class SaltosPage {
   }
 
   ionViewWillLeave(){
-    this.stop();
+    //this.stop();
   }
 
   start() {
@@ -51,13 +56,40 @@ export class SaltosPage {
       this.seconds++;
       this.time = this.getTimeFormatted();
       document.getElementById('time').innerHTML=this.time;
+      this.backgroundMode.configure({
+        title: '¡Saltos!',
+        text: this.time+' Presione notificación para continuar',
+        color: 'primary',
+        hidden: false,
+        bigText: true,
+      });
     }, 1000);
+    this.bgNotify();
   }
 
   stop() {
+    this.stopNotify();
     window.clearInterval(this.interval);
     this.seconds = 0;
-    this.stopJump()
+    this.stopJump();
+    this.navCtrl.setRoot(HomePage)
+  }
+
+  bgNotify(){
+    
+    if(this.platform.is('cordova')){
+      this.backgroundMode.enable();
+      if(this.backgroundMode.isEnabled()){
+        this.backgroundMode.on('enable')
+      }else{
+      }
+    }
+  }
+
+  stopNotify(){
+    if(this.platform.is('cordova')){
+      this.backgroundMode.disable();
+    }
   }
 
   getTimeFormatted() {
@@ -153,10 +185,6 @@ export class SaltosPage {
   stopJump(){
     this.loadStopGetData();
     this.w.unsubscribe();
-  }
-
-  toHomePage(){
-    this.navCtrl.pop();
   }
 
   loadInitGetData() {
