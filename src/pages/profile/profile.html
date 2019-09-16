@@ -1,17 +1,47 @@
 <ion-content padding>
   <ion-navbar>
-    <p class="title">Perfil</p>
+    <p class="t">Perfil</p>
+    <ion-buttons end padding-right>
+      <button ion-button icon-only (click)="toEditProfilePage()"><ion-icon name="create" class="navbar-logo"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
+  <div align="center" (click)="getProfilePhoto()" *ngIf="usr">
+    <img class="profilePhoto" src="{{profilePhoto}}">
+  </div>
+  <div padding align="center">
+    <p class="text">Para modificar foto de perfil presione la imágen</p>
+  </div>
 
-  <ion-list>
+  <ion-list *ngIf="usr" padding-right>
+    <ion-item>
+      <ion-label class="item-text">Apodo: </ion-label>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.nickName }} </p>
+    </ion-item>
     <ion-item>
       <ion-label class="item-text">Nombre: </ion-label>
-      <p item-end class="item-text"> test 1 </p>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.name }} {{ (userFromFB | async)?.surname }} </p>
     </ion-item>
     <ion-item>
       <ion-label class="item-text">RUN: </ion-label>
-      <p item-end class="item-text"> test 2 </p>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.run }} - {{ (userFromFB | async)?.v_run }} </p>
+    </ion-item>
+    <ion-item>
+      <ion-label class="item-text">Fecha de Nacimiento: </ion-label>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.dateBirth }} </p>
+    </ion-item>
+    <ion-item>
+      <ion-label class="item-text">Edad: </ion-label>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.age }} años</p>
+    </ion-item>
+    <ion-item>
+      <ion-label class="item-text">Estatura: </ion-label>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.height }} Mts </p>
+    </ion-item>
+    <ion-item>
+      <ion-label class="item-text">Peso: </ion-label>
+      <p item-end class="item-text"> {{ (userFromFB | async)?.weight }} Kg </p>
     </ion-item>
   </ion-list>
+
 
 </ion-content>

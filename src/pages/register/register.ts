@@ -3,13 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
 import { LoginPage } from '../login/login';
-
-/**
- * Generated class for the RegisterPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire'
 
 @IonicPage()
 @Component({
@@ -24,7 +18,8 @@ export class RegisterPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    public afProvider: AnguarFireProvider
     ) {
   }
 
@@ -39,6 +34,9 @@ export class RegisterPage {
           if(this.user.password === this.user.confirm_password){
             this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
               this.presentLoading();
+            }).then(()=>{
+              this.user.uid = this.afAuth.auth.currentUser.uid;
+              this.afProvider.updateUserData(this.user.uid, this.user);
               this.navCtrl.setRoot(LoginPage);
             })
           }else{

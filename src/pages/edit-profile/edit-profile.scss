@@ -1,4 +1,4 @@
-page-profile {
+page-edit-profile {
     .content.content-md{
         background-color: darkslategrey;
     }
@@ -21,15 +21,9 @@ page-profile {
         font-size: 15px;
     }
 
-    .text{
+    .title{
         color: color($colors, light);
-        font-size: 13px; 
-    }
-
-    .t{
-        color: color($colors, light);
-        font-size: 18px;
-        text-align: center;
+        font-size: 25px;
     }
 
     .back-button-icon.icon.icon-md.back-button-icon-md.ion-md-arrow-back{
@@ -41,5 +35,11 @@ page-profile {
         height: 100px;
         border-radius: 20px;
         //image-resolution: 50%;
+    }
+
+    .toolbar-title-md,
+    .item-label-stacked .text-input-md, .item-label-floating .text-input-md,
+    .datetime-text{
+        color: color($colors, light);
     }
 }

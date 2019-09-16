@@ -16,7 +16,6 @@ export class HealthStatusResumePage {
   steps: any[];
   total_steps: number = 0;
   heart_rates: any[];
-  date_heart_rates: string;
 
   constructor(
     public navCtrl: NavController,
@@ -34,8 +33,8 @@ export class HealthStatusResumePage {
       console.log('Conectado con Google Fit: '+this.health);
       if(this.health=true){
         this.presentToast('Obtenga datos desde Google Fit');
-        alert('Obteniendo datos desde Google Fit');
         this.getHealthData();
+        this.getHeartRate();
       }else{
         this.presentToast('No puede obtener datos desde Google Fit');
         this.navCtrl.pop();
@@ -55,28 +54,23 @@ export class HealthStatusResumePage {
   getHealthData(){
     this.googleFitProvider.getCaloriesFromHealth().then(calories =>{
       this.calories = calories;
-      console.log(this.calories);
-      console.log(this.calories.length);
       for(var cal = 0; cal < this.calories.length; cal++){
-        console.log(this.calories[cal].value);
         this.total_calories = Math.round(this.total_calories+this.calories[cal].value) 
       }
     });
     this.googleFitProvider.getStepsFromHealth().then(steps=>{
       this.steps = steps;
-      console.log(this.steps);
-      console.log(this.steps.length);
       for(var st = 0; st < this.steps.length; st++){
-        console.log(this.steps[st].value);
         this.total_steps = this.total_steps+this.steps[st].value;
       }
-    });
-    this.googleFitProvider.getHeartRateFromHealth().then(heart_rates =>{
-      let heart_rts : any[] = heart_rates;
-      //console.log(this.heart_rates);
-      this.heart_rates = heart_rts.filter(e=>e !== 'GMT-0300 (hora de verano de Chile)');
-      //console.log(this.heart_rates);
-    })
+    });    
+  }
+
+  getHeartRate() {
+    this.googleFitProvider.getHeartRateFromHealth().then(rates=>{
+      this.heart_rates = rates;
+      console.table(this.heart_rates);
+    });    
   }
 
 }

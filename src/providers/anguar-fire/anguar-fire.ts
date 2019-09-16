@@ -59,7 +59,7 @@ export class AnguarFireProvider {
   }
 
   updateUserData(uid, user){
-    this.afDb.database.ref('Pacientes/'+uid+'/User_Info').set(user);
+    this.afDb.database.ref('Pacientes/'+uid+'/User_Info').update(user);
   }
 
   /*public getPet(uid, id){

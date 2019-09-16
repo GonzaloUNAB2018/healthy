@@ -1,0 +1,66 @@
+<ion-content padding>
+  <ion-navbar *ngIf="!edit">
+    
+  </ion-navbar>
+  <!--div>
+    <ion-buttons *ngIf="edit">
+      <button ion-button icon-only (click)="back()"><ion-icon name="arrow-back" class="navbar-logo"></ion-icon></button>
+    </ion-buttons>
+  </div-->
+  <ion-title align="center" padding-top>Edite sus datos</ion-title>
+  <ion-list *ngIf="usr">
+    <ion-item padding>
+      <ion-label stacked>Apodo</ion-label>
+      <ion-input type="text" placeholder="{{ (usr|async)?.nickName }}" [(ngModel)]="user.nickName"></ion-input>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Nombre</ion-label>
+      <ion-input type="text" placeholder="{{ (usr|async)?.name }}" [(ngModel)]="user.name"></ion-input>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Apellido</ion-label>
+      <ion-input type="text" placeholder="{{ (usr|async)?.surname }}" [(ngModel)]="user.surname"></ion-input>
+    </ion-item>
+    <div padding-left padding-right><p class="item-text">
+      En la izquierda el número de run. En la derecha, el código verificador.
+      Si termina en K, reemplace con 1.
+    </p></div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-7>
+          <ion-item padding-left padding-right>
+            <ion-label stacked>RUN (ej: 12345678)</ion-label>
+            <ion-input type="number" placeholder="{{ (usr|async)?.run }}" [(ngModel)]="user.run"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-5>
+          <ion-item padding-left padding-right>
+            <ion-label stacked>N° Ver (ej: 0)</ion-label>
+            <ion-input type="number" placeholder="{{ (usr|async)?.v_run }}" [(ngModel)]="user.v_run"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item padding>
+      <ion-label stacked>Fecha de nacimiento</ion-label>
+      <ion-datetime displayFormat='DD MMM YYYY' placeholder="{{ (usr|async)?.dateBirth }}" [(ngModel)]="user.dateBirth"></ion-datetime>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Edad</ion-label>
+      <ion-input type="number" placeholder="{{ (usr|async)?.age }}" [(ngModel)]="user.age"></ion-input>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Peso (Kg)</ion-label>
+      <ion-input type="number" placeholder="{{ (usr|async)?.weight }}" [(ngModel)]="user.weight"></ion-input>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Altura (Mts)</ion-label>
+      <ion-input type="number" placeholder="{{ (usr|async)?.height }}" [(ngModel)]="user.height"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button round full color="primary" (click)="editUserData()">
+      Editar Datos
+  </button>
+
+</ion-content>

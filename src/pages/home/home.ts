@@ -16,6 +16,7 @@ import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { ProfilePage } from '../profile/profile';
 import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
+import { EditProfilePage } from '../edit-profile/edit-profile';
 //import { Health } from '@ionic-native/health';
 
 
@@ -61,6 +62,7 @@ export class HomePage {
   requiereUpdate: any;
   versionApp = '0.1.0.2';
   health : boolean;
+  updateUserLoader: any;
 
   constructor(
     public navCtrl: NavController,
@@ -81,14 +83,29 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
+    this.user.nickName = null;
+    this.user.weight = null;
+    this.user.height = null;
     this.uid = this.afUser.uid;
-    this.user.nickName = this.afUser.displayName;
-    if(this.user.nickName===null){
-      this.alertaNuevoUsuario()
-    }else{
-      //console.log(this.user.nickName);
-      this.toast(this.user.nickName)
-    }
+    this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
+      let usr : any = user
+      this.user.uid = usr.uid;
+      this.user.nickName = usr.nickName;
+      this.user.name = usr.name;
+      this.user.surname = usr.surname;
+      this.user.run = usr.run;
+      this.user.dateBirth = usr.dateBirth;
+      this.user.weight = usr.weight;
+      this.user.height = usr.height;
+      console.log(user);
+      if(!this.user.nickName||!this.user.name||!this.user.surname||!this.user.run||!this.user.dateBirth||!this.user.weight||!this.user.weight){
+        var edit : boolean = true;
+        this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
+      }else{
+        this.toast(this.user.nickName)
+      }
+    })
+    
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
       if(this.requiereUpdate.requiere==='0.1.0.2'){
@@ -186,11 +203,10 @@ export class HomePage {
   
 
   loadUpdateUserData() {
-    const loader = this.loadingCtrl.create({
+    this.updateUserLoader = this.loadingCtrl.create({
       content: "Actualizando datos...",
-      duration: 500
     });
-    loader.present();
+    this.updateUserLoader.present();
   }
 
 
@@ -231,92 +247,7 @@ export class HomePage {
     alert.present()
 
   }
-
-  ///////////// **** SUPERVISIÓN DE CAIDA **** /////////////
-  initSupervision(){
-    this.initSensor();
-  }
-
   
-  initSensor() {
-    var sensors;
-    this.supervisionButton = false;
-    this.disabled_sa = true;
-    this.disabled_ab = true;
-    this.disabled_se = true;
-    this.disabled_ca = true;
-
-    sensors.enableSensor("ACCELEROMETER");
-
-    console.log('Se inicia supervisión')
-
-    setInterval(() => {
-      sensors.getState((values) => {
-        this.accX = values[0];
-        this.accY = values[1];
-        this.accZ = values[2];
-        if(this.accX>this.n||this.accX<-this.n||this.accY>this.n||this.accY<-this.n||this.accZ>this.n||this.accZ<-this.n){
-          this.n = 100;
-          console.log('ALERTA', this.n)
-          this.alertaDeCaida();
-          setTimeout(()=>{
-            this.n=35,
-            console.log('RETORNO A 35')
-          }, 5000);
-        }else{
-          setTimeout(()=>{
-            console.log('SIN ALERTA')
-          }, 1000)
-        }
-      });
-      
-    }, 100);
-    
-  }
-
-  stopSupervision(){
-    var sensors;
-    this.supervisionButton = true;
-    this.disabled_sa = false;
-    this.disabled_ab = false;
-    this.disabled_se = false;
-    this.disabled_ca = false;
-    sensors.disableSensor();
-    console.log('Se detiene supervisión')
-  }
-
-
-  imageWarning(){
-    this.warning='./assets/imgs/warning.png'
-  }
-
-  noImageWarning(){
-    this.warning = null;
-  }
-  
-  alertaDeCaida() {
-    let alert = this.alertCtrl.create({
-      title: 'CAIDA',
-      message: 'Se ha detectado una caida. ¿Ejecutamos una llamada?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'OK',
-          handler: () => {
-            console.log('Buy clicked');
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
   loadDb(){
     this.navCtrl.push(LoadDatabasePage);
   }
@@ -347,9 +278,7 @@ export class HomePage {
            {
              text: 'Ok',
              handler: data => {
-              this.user.nickName = data.nickName,
-              this.user.run = data.RUN
-              this.updateUser();
+              this.updateUser(data.nickName, data.RUN);
              }
           }
          ]
@@ -357,13 +286,18 @@ export class HomePage {
       alert.present();
     }
 
-    updateUser(){
-      this.afAuth.auth.currentUser.updateProfile({
-        displayName: this.user.nickName
-      });
-      this.user.uid = this.uid;
-      this.afProvider.updateUserData(this.uid, this.user);
+    updateUser(nickName, RUN){
       this.loadUpdateUserData();
+      this.user.uid = this.afUser.uid;
+      this.user.nickName = nickName;
+      this.user.run = RUN;
+      this.afAuth.auth.currentUser.updateProfile({
+        displayName: nickName
+      }).then(()=>{
+        this.afProvider.updateUserData(this.uid, this.user);
+        this.updateUserLoader.dismiss();
+      })
+      
     }
 
   /////////////////////////////////////////////////////////////////////////////////

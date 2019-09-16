@@ -17,6 +17,7 @@ import { Stepcounter } from '@ionic-native/stepcounter';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Gyroscope } from '@ionic-native/gyroscope'
 import { Health } from '@ionic-native/health';
+import { Camera } from '@ionic-native/camera';
 
 //FIREBASE
 import {firebase} from './firebase.module';
@@ -47,6 +48,8 @@ import { ConfigurationPageModule } from '../pages/configuration/configuration.mo
 import { LoadDatabasePageModule } from '../pages/load-database/load-database.module';
 import { ProfilePageModule } from '../pages/profile/profile.module';
 import { GoogleFitProvider } from '../providers/google-fit/google-fit';
+import { HealthDbProvider } from '../providers/health-db/health-db';
+import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module';
 
 
 
@@ -72,6 +75,7 @@ import { GoogleFitProvider } from '../providers/google-fit/google-fit';
     ConfigurationPageModule,
     LoadDatabasePageModule,
     ProfilePageModule,
+    EditProfilePageModule,
     HealthStatusResumePageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
@@ -100,7 +104,9 @@ import { GoogleFitProvider } from '../providers/google-fit/google-fit';
     AnguarFireProvider,
     BackgroundMode,
     Health,
-    GoogleFitProvider
+    GoogleFitProvider,
+    HealthDbProvider,
+    Camera
   ]
 })
 export class AppModule {}

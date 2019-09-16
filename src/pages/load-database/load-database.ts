@@ -48,10 +48,12 @@ export class LoadDatabasePage {
   diference: number = 0;
 
   loadingBar: boolean = false;
+  ableButtons: boolean = true;
   
 
   loadInfo: string = "";
   okLoad: boolean;
+  loadSyncData: any;
 
   constructor(
     public navCtrl: NavController,
@@ -142,27 +144,21 @@ export class LoadDatabasePage {
     });
   }
 
-  loadDBFirebase(okLoad: boolean){
-    if(this.steps_tasks.length!=0||this.ABS_tasks.length!=0||this.jump_tasks.length!=0){
-      
-      okLoad = true;
-      
-    }else{
-      okLoad = false;
-      alert('Nada que sincronizar');
-    };
-  }
-
   move(){
+    
     var elem = document.getElementById('myBar');
     var width = 1;
     var id = setInterval(()=>{
       if (width >= 100) {
         clearInterval(id);
-        this.loadInfo = 'Datos sincronizados exitosamente'
+        this.loadInfo = 'Datos sincronizados exitosamente';
+        this.okToast();
+        this.ableButtons = true;
       } else {
         width++; 
-        elem.style.width = width + '%'; 
+        elem.style.width = width + '%';
+        this.loadInfo = 'Sincronizando datos...';
+        this.loadSyncData.dismiss();
       }  
     }, 10);
   }
@@ -184,6 +180,8 @@ export class LoadDatabasePage {
         {
           text: 'OK',
           handler: () => {
+            this.ableButtons = false;
+            this.loadNewSync();
             setTimeout(()=>{
               this.okLoadToDatabase();
             },300);
@@ -195,10 +193,9 @@ export class LoadDatabasePage {
   }
 
   okLoadToDatabase(){
-    this.loadDBFirebase(this.okLoad);
-    if(this.okLoad=true){
+    //this.loadDBFirebase(this.okLoad);
+    if(this.steps_tasks.length!=0||this.ABS_tasks.length!=0||this.jump_tasks.length!=0){
       this.move();
-      this.loadInfo = 'Sincronizando datos...'
       console.log(this.steps_tasks.length+this.ABS_tasks.length+this.jump_tasks.length)
       for(var s = 0;s<this.steps_entries;s++) { 
         console.log(this.steps_tasks[s].time);
@@ -240,7 +237,8 @@ export class LoadDatabasePage {
         this.afService.updateABSInfo(this.uid, ABSinfo);
       }
     }else{
-
+      alert('Nada que sincronizar');
+      this.loadSyncData.dismiss()
     }
   }
 
@@ -301,12 +299,11 @@ export class LoadDatabasePage {
   }
 
   loadNewSync(){
-    const loading = this.loadingCtrl.create({
-       content: 'Please wait...',
-       duration: 2000
+    this.loadSyncData = this.loadingCtrl.create({
+       content: 'Calculando datos...',
      });
   
-     loading.present();
+     this.loadSyncData.present();
   }
 
   

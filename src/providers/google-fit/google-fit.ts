@@ -34,7 +34,11 @@ export class GoogleFitProvider {
           'fat_percentage',
           'date_of_birth',
         ],       //read only permission
-        write: []  //write only permission
+        write: [
+          'date_of_birth',
+          'height',
+          'weight',
+        ]  //write only permission
       }
     ])
   }
@@ -74,5 +78,7 @@ export class GoogleFitProvider {
       limit: 1000
     })
   }
+
+
 
 }

@@ -1,12 +1,16 @@
 <ion-content padding>
 
-  <ion-navbar></ion-navbar>
+  <ion-navbar *ngIf="ableButtons"></ion-navbar>
 
   <p class="title" padding>Sincronice su actividad</p>
 
   <button ion-button full round large color="primary"  
   
-  (click)="syncDb()">SINCRONIZAR</button>
+  (click)="syncDb()" *ngIf="ableButtons">SINCRONIZAR</button>
+
+  <button ion-button full round large color="primary"  
+  
+  disabled *ngIf="!ableButtons">SINCRONIZAR</button>
 
   <br>
 
@@ -17,4 +21,5 @@
   </div>
 
   <p class="item-text"> {{loadInfo}} </p>
+  
 </ion-content>
