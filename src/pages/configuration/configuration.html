@@ -6,9 +6,16 @@
 
   <ion-list>
     <ion-item>
-      <ion-label class="item-text">Borrar Base de Datos</ion-label>
-      <button ion-button outline item-end (click)="deleteBD()">Borrar</button>
+      <ion-label class="item-text"><ion-icon name="trash"></ion-icon> Reinicie Base de Datos</ion-label>
+      <button ion-button outline item-end (click)="deleteBD()">Reiniciar</button>
     </ion-item>
+    <ion-item>
+      <ion-label class="item-text"><ion-icon name="trash"></ion-icon> Eliminar Datos de Pulsos</ion-label>
+      <button ion-button outline item-end (click)="deleteRates()">Eliminar</button>
+    </ion-item>
+    <div padding>
+      <p class="item-text"><ion-icon name="heart"></ion-icon> Existe en base de datos {{rates}} registros guardados.</p>
+    </div>
   </ion-list>
 
 </ion-content>

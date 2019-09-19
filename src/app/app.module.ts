@@ -50,6 +50,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 import { GoogleFitProvider } from '../providers/google-fit/google-fit';
 import { HealthDbProvider } from '../providers/health-db/health-db';
 import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module';
+import { HomePageModule } from '../pages/home/home.module';
 
 
 
@@ -58,7 +59,6 @@ import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module
     MyApp,
     AboutPage,
     ContactPage,
-    HomePage,
   ],
   imports: [
     HttpClientModule,
@@ -79,14 +79,14 @@ import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module
     HealthStatusResumePageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    ProgressBarModule
+    ProgressBarModule,
+    HomePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     AboutPage,
     ContactPage,
-    HomePage,
   ],
   providers: [
     StatusBar,

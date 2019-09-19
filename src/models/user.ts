@@ -16,4 +16,5 @@ export class User {
     age: number;
     weight: number;
     height: number;
+    lastRateSolicitude: string;
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ToastController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { InitialPage } from '../initial/initial';
 import { ConfigurationPage } from '../configuration/configuration';
@@ -17,7 +17,6 @@ import { ProfilePage } from '../profile/profile';
 import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
 import { EditProfilePage } from '../edit-profile/edit-profile';
-//import { Health } from '@ionic-native/health';
 
 
 @Component({
@@ -66,6 +65,7 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public loadingCtrl: LoadingController,
     private afAuth: AngularFireAuth,
     private alertCtrl: AlertController,
@@ -76,39 +76,48 @@ export class HomePage {
     public sqlite: SQLite,
     public afProvider: AnguarFireProvider,
     public googleFitProvider: GoogleFitProvider,
+
     //private health: Health,
     //private afDb: AngularFireDatabase,
     ) {
-      
+      this.user.nickName = null;
+      this.user.weight = null;
+      this.user.height = null;
+      this.uid = this.afUser.uid;
+      this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
+        let usr : any = user
+        this.user.uid = usr.uid;
+        this.user.nickName = usr.nickName;
+        this.user.name = usr.name;
+        this.user.surname = usr.surname;
+        this.user.run = usr.run;
+        this.user.dateBirth = usr.dateBirth;
+        this.user.weight = usr.weight;
+        this.user.height = usr.height;
+        this.user.profilePhoto = usr.profilePhoto;
+        console.log(user);
+        if(
+          !this.user.nickName||
+          !this.user.name||
+          !this.user.surname||
+          !this.user.run||
+          !this.user.dateBirth||
+          !this.user.weight||
+          !this.user.height){
+          var edit : boolean = true;
+          this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
+        }else{
+          this.toast(this.user.nickName);
+        }
+      });      
   }
 
   ionViewDidLoad(){
-    this.user.nickName = null;
-    this.user.weight = null;
-    this.user.height = null;
-    this.uid = this.afUser.uid;
-    this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
-      let usr : any = user
-      this.user.uid = usr.uid;
-      this.user.nickName = usr.nickName;
-      this.user.name = usr.name;
-      this.user.surname = usr.surname;
-      this.user.run = usr.run;
-      this.user.dateBirth = usr.dateBirth;
-      this.user.weight = usr.weight;
-      this.user.height = usr.height;
-      console.log(user);
-      if(!this.user.nickName||!this.user.name||!this.user.surname||!this.user.run||!this.user.dateBirth||!this.user.weight||!this.user.weight){
-        var edit : boolean = true;
-        this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
-      }else{
-        this.toast(this.user.nickName)
-      }
-    })
+    
     
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
-      if(this.requiereUpdate.requiere==='0.1.0.2'){
+      if(this.requiereUpdate.requiere==='0.1.0.3'){
         console.log('No requiere actualizar');
         this.googleFitProvider.accesToHealth()
         .then(available=>{
@@ -185,7 +194,7 @@ export class HomePage {
   }
 
   toHealthPage(){
-    this.navCtrl.push(HealthStatusResumePage, {health:this.health})
+    this.navCtrl.push(HealthStatusResumePage, {health:this.health, uid:this.uid})
   }
 
   toStepsPage(){

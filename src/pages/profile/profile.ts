@@ -24,6 +24,7 @@ export class ProfilePage {
   age: any;
   userAge: string = null;
 
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -36,9 +37,7 @@ export class ProfilePage {
       this.userFromFB = this.afProvider.getUserInfo(this.uid).valueChanges();
       this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
         this.usr = user;
-        if(!this.usr.profilePhoto){
-          this.profilePhoto = './assets/imgs/blank_profile.png';
-        }else{
+        if(this.usr){
           this.profilePhoto = this.usr.profilePhoto;
         }
       })
@@ -74,3 +73,4 @@ export class ProfilePage {
   }
   
 }
+

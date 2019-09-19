@@ -36,8 +36,6 @@ export class AnguarFireProvider {
     this.afDb.database.ref('Pacientes/'+uid+'/Ejercicios/').remove();
   }
 
-  
-
   updateJumpInfo(uid, info){
     this.afDb.database.ref('Pacientes/'+uid+'/Ejercicios/Saltos').update(info);
   }
@@ -62,26 +60,17 @@ export class AnguarFireProvider {
     this.afDb.database.ref('Pacientes/'+uid+'/User_Info').update(user);
   }
 
-  /*public getPet(uid, id){
-    return this.afDb.object('Profile/'+uid+'/Pets/'+id);
+  userHearthRateSetLastData(uid, rate){
+    this.afDb.database.ref('Pacientes/'+uid+'/Hearth_Rates/'+rate.id).set(rate);
   }
 
-  public createPet(uid, pet){
-    this.afDb.database.ref('Profile/'+uid+'/Pets/'+pet.id).set(pet);
+  getUserHearthAllRates(uid){
+    return this.afDb.list('Pacientes/'+uid+'/Hearth_Rates/');
   }
 
-  public savePet(uid, pet){
-    this.afDb.database.ref('Profile/'+uid+'/Pets/'+pet.id).update(pet);
+  deleteRates(uid){
+    this.afDb.database.ref('Pacientes/'+uid+'/Hearth_Rates/').remove();
   }
-
-  public deletePet(uid, pet){
-    this.afDb.database.ref('Profile/'+uid+'/Pets/'+pet.id).remove();
-  }
-
-  public getPetLost(uid, id){
-    return this.afDb.object('Profile/'+uid+'/Pets/'+id+'/lost')
-  }*/
-
 
   
 

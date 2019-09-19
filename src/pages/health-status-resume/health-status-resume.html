@@ -5,5 +5,12 @@
   <p class="text">Total cal gastadas últimos 3 días: {{total_calories}}</p>
   <p class="text">Total pasos dados últimos 3 días: {{total_steps}}</p>
 
-    
+
+  <button ion-button (click)="getHeartRate()">Obtener Pulsaciones</button>
+
+  <p class="text"> {{pendentText}} </p>
+
+  <button *ngIf="hableSync" ion-button (click)="gfH_Rate()">Sincronizar</button>
+
+
 </ion-content>

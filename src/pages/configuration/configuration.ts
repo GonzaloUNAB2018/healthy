@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { SQLite } from '@ionic-native/sqlite';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
 import { ABSDbProvider } from '../../providers/ABS-db/ABSs-db';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { User } from '../../models/user';
 
 /**
  * Generated class for the ConfigurationPage page.
@@ -22,6 +23,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class ConfigurationPage {
 
   uid = this.afAuth.auth.currentUser.uid;
+  rates : number = 0;
+  user = {} as User;
+  loadingObjectDeleteRates: any;
 
   constructor(
     public navCtrl: NavController,
@@ -32,13 +36,26 @@ export class ConfigurationPage {
     public jumpDbService: JumpDbProvider,
     public ABSDbService: ABSDbProvider,
     public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
     public afService: AnguarFireProvider,
     private afAuth: AngularFireAuth
     ) {
+      
+    this.afService.getUserHearthAllRates(this.uid).valueChanges().subscribe(rts=>{
+      if(rts){
+        this.rates = rts.length;
+        if(this.rates === undefined){
+          this.rates = 0;
+        }else{
+          this.rates = rts.length;
+        }
+      }
+    })
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfigurationPage');
+
   }
 
   deleteDatabase(){
@@ -107,6 +124,55 @@ export class ConfigurationPage {
     });
 
     toast.present()
+  }
+
+  loadingDeleteRates(){
+    this.loadingObjectDeleteRates = this.loadingCtrl.create({
+           content: 'Por Favor espere. Puede tardar unos minutos'
+         });
+      
+         this.loadingObjectDeleteRates.present()
+       
+         
+  }
+
+  deleteRatesToast() {
+    const toast = this.toastCtrl.create({
+      message: 'Datos removidos exitosamente',
+      duration: 1000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present()
+  }
+
+  deleteRates(){
+    
+    this.loadingDeleteRates();
+    setTimeout(() => {
+      this.user.lastRateSolicitude = new Date(new Date().getTime() - 728 * 24 * 60 * 60 * 1000).toString();
+      this.afService.deleteRates(this.uid);
+      this.afService.updateUserData(this.uid, this.user);
+      setTimeout(() => {
+        this.afService.getUserHearthAllRates(this.uid).valueChanges().subscribe(rts=>{
+          if(rts){
+            this.rates = rts.length;
+            if(this.rates === undefined){
+              this.rates = 0;
+              this.loadingObjectDeleteRates.dismiss();
+              this.deleteRatesToast();
+            }else{
+              this.rates = rts.length;
+              this.loadingObjectDeleteRates.dismiss();
+            }
+          }
+        })
+      }, 500);
+    }, 1000);
   }
  
 }
