@@ -59,7 +59,7 @@ export class HomePage {
   uid: any;
 
   requiereUpdate: any;
-  versionApp = '0.1.0.2';
+  versionApp = '0.1.0.3';
   health : boolean;
   updateUserLoader: any;
 
