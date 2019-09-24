@@ -58,7 +58,7 @@
     "firebase": "6.3.0",
     "rxjs": "6.0.0",
     "rxjs-compat": "6.5.2",
-    "typescript": "2.4.2",
+    "typescript": "^2.6.1",
     "ws": "3.3.2"
   },
   "description": "An Ionic project",
