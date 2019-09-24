@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, ToastController, LoadingController
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { User } from '../../models/user';
-import { HomePage } from '../home/home';
 
 
 @IonicPage()
@@ -172,8 +171,10 @@ export class HealthStatusResumePage {
           };
         };
       };
+      this.hableSync = false;
     }).catch(e=>{
       this.navCtrl.pop();
+      this.hableSync = false;
       alert(e);
     })
   }

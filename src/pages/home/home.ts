@@ -59,7 +59,7 @@ export class HomePage {
   uid: any;
 
   requiereUpdate: any;
-  versionApp = '0.1.0.3';
+  versionApp = '0.1.0.4';
   health : boolean;
   updateUserLoader: any;
 
@@ -75,49 +75,47 @@ export class HomePage {
     public jumpDbService: JumpDbProvider,
     public sqlite: SQLite,
     public afProvider: AnguarFireProvider,
-    public googleFitProvider: GoogleFitProvider,
-
-    //private health: Health,
-    //private afDb: AngularFireDatabase,
+    public googleFitProvider: GoogleFitProvider
     ) {
-      this.user.nickName = null;
-      this.user.weight = null;
-      this.user.height = null;
-      this.uid = this.afUser.uid;
-      this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
-        let usr : any = user
-        this.user.uid = usr.uid;
-        this.user.nickName = usr.nickName;
-        this.user.name = usr.name;
-        this.user.surname = usr.surname;
-        this.user.run = usr.run;
-        this.user.dateBirth = usr.dateBirth;
-        this.user.weight = usr.weight;
-        this.user.height = usr.height;
-        this.user.profilePhoto = usr.profilePhoto;
-        console.log(user);
-        if(
-          !this.user.nickName||
-          !this.user.name||
-          !this.user.surname||
-          !this.user.run||
-          !this.user.dateBirth||
-          !this.user.weight||
-          !this.user.height){
-          var edit : boolean = true;
-          this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
-        }else{
-          this.toast(this.user.nickName);
-        }
-      });      
+      
+      
   }
 
   ionViewDidLoad(){
-    
+    this.user.nickName = null;
+    this.user.weight = null;
+    this.user.height = null;
+    this.uid = this.afUser.uid;
+    this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
+      let usr : any = user
+      this.user.uid = usr.uid;
+      this.user.nickName = usr.nickName;
+      this.user.name = usr.name;
+      this.user.surname = usr.surname;
+      this.user.run = usr.run;
+      this.user.dateBirth = usr.dateBirth;
+      this.user.weight = usr.weight;
+      this.user.height = usr.height;
+      this.user.profilePhoto = usr.profilePhoto;
+      console.log(user);
+      if(
+        !this.user.nickName||
+        !this.user.name||
+        !this.user.surname||
+        !this.user.run||
+        !this.user.dateBirth||
+        !this.user.weight||
+        !this.user.height){
+        var edit : boolean = true;
+        this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
+      }else{
+        this.toast(this.user.nickName);
+      }
+    });      
     
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
-      if(this.requiereUpdate.requiere==='0.1.0.3'){
+      if(this.requiereUpdate.requiere==='0.1.0.4'){
         console.log('No requiere actualizar');
         this.googleFitProvider.accesToHealth()
         .then(available=>{

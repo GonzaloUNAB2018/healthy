@@ -18,7 +18,8 @@ import { HomePage } from '../home/home';
 })
 export class LoginPage {
 
-  user = {} as User
+  user = {} as User;
+  ok: any;
 
   constructor(
     public navCtrl: NavController,
@@ -31,6 +32,12 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+    var ok;
+    if(ok){
+      console.log('Funciona correctamente');
+    }else{
+      console.log('Error');
+    }
     console.log('ionViewDidLoad LoginPage');
   }
 
@@ -38,6 +45,8 @@ export class LoginPage {
     this.afAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
       this.presentLoading();
       this.navCtrl.setRoot(HomePage);
+    }).catch(error=>{
+      console.log(error)
     })
   }
 
