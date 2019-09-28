@@ -27,7 +27,7 @@ export class EditProfilePage {
     public toastCtrl : ToastController
     ) {
 
-      this.user.uid = this.navParams.get('uid');
+      //this.user.uid = this.navParams.get('uid');
       this.edit = this.navParams.get('edit');
 
   }
@@ -41,18 +41,20 @@ export class EditProfilePage {
     this.usr = this.afProvider.getUserInfo(this.user.uid).valueChanges();
     this.afProvider.getUserInfo(this.user.uid).valueChanges().subscribe(user=>{
       this.usr_ = user;
-      if(!this.usr_.profilePhoto){
-        this.user.profilePhoto = this.profilePhoto;
-        this.afProvider.updateUserData(this.user.uid, this.user);
+      if(this.usr_){
+        if(!this.usr_.profilePhoto){
+          this.user.profilePhoto = this.profilePhoto;
+          this.afProvider.updateUserData(this.user.uid, this.user);
+        }
       }
     })
   }
+  
 
   editUserData(){
     const load = this.loadingCtrl.create({
       content : 'Editando datos...',
     });
-
     load.present();
     this.afProvider.updateUserData(this.user.uid, this.user);
     if(this.edit){

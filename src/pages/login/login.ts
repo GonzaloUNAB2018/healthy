@@ -42,19 +42,20 @@ export class LoginPage {
   }
 
   login(){
-    this.afAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
-      this.presentLoading();
-      this.navCtrl.setRoot(HomePage);
-    }).catch(error=>{
-      console.log(error)
-    })
+    if(this.user.email&&this.user.password){
+      const loader = this.loadingCtrl.create({
+        content: "Please wait...",
+      });
+      loader.present();
+      this.afAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
+        if(user){
+          loader.dismiss();
+          this.navCtrl.setRoot(HomePage);
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
+    }
   }
-
-  presentLoading() {
-    const loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      duration: 3000
-    });
-    loader.present();
-  }
+  
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
-import { LoginPage } from '../login/login';
-import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire'
+import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
+import { validate } from 'rut.js';
 
 @IonicPage()
 @Component({
@@ -42,34 +42,42 @@ export class RegisterPage {
         if(this.user.confirm_password != null){
           if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone){
             if(this.user.phone.toString().length >= 9){
-              if(this.user.password === this.user.confirm_password){
-                this.changePage = false;
-                const loader = this.loadingCtrl.create({
-                  content: "Registrando Usuario...",
-                });
-                loader.present();
-                this.user.phoneNumber = '+569'+this.user.phone;
-                this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
-                  this.afAuth.auth.currentUser.updateProfile({
-                    displayName: this.user.name+' '+this.user.surname
-                  });
-                  if(user){
-                    this.user.uid = this.afAuth.auth.currentUser.uid;
-                    this.afProvider.updateUserData(this.user.uid, this.user);
-                    this.afAuth.auth.signOut().then(()=>{
-                      loader.dismiss();
-                      this.changePage = true;
-                      this.navCtrl.pop();
-                    }).catch(e=>{
-                      loader.dismiss();
-                      this.changePage = true;
-                      this.navCtrl.pop();
-                      alert(e);
+              if(this.user.run){
+                if(validate(this.user.run)){
+                  if(this.user.password === this.user.confirm_password){
+                    this.changePage = false;
+                    const loader = this.loadingCtrl.create({
+                      content: "Registrando Usuario...",
+                    });
+                    loader.present();
+                    this.user.phoneNumber = '+569'+this.user.phone;
+                    this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
+                      this.afAuth.auth.currentUser.updateProfile({
+                        displayName: this.user.name+' '+this.user.surname
+                      });
+                      if(user){
+                        this.user.uid = this.afAuth.auth.currentUser.uid;
+                        this.afProvider.updateUserData(this.user.uid, this.user);
+                        this.afAuth.auth.signOut().then(()=>{
+                          loader.dismiss();
+                          this.changePage = true;
+                          this.navCtrl.pop();
+                        }).catch(e=>{
+                          loader.dismiss();
+                          this.changePage = true;
+                          this.navCtrl.pop();
+                          alert(e);
+                        })
+                      }
                     })
+                  }else{
+                    alert('Contraseñas ingresadas no coinciden. Intente nuevamente');
                   }
-                })
+                }else{
+                  alert('RUN no validado')
+                }
               }else{
-                alert('Contraseñas ingresadas no coinciden. Intente nuevamente');
+                alert('Agregar RUN')
               }
             }else{
               alert('Número de teléfono debe contar con 9 dígitos');

@@ -43,6 +43,20 @@ export class ProfilePage {
       })
   }
 
+  getAge(dateBirth){
+    var date = dateBirth;
+    var d = new Date(date).getTime();
+    var toDay = new Date().getTime();
+    var calc = toDay - d;
+    var seconds = calc/1000;
+    var minutes = seconds/60;
+    var hours = minutes/60;
+    var days = hours/24;
+    var mounths = days/30.5;
+    var years = mounths/12;
+    return Math.trunc(years)
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }

@@ -21,33 +21,17 @@
       <ion-label stacked>Apellido</ion-label>
       <ion-input type="text" placeholder="{{ (usr|async)?.surname }}" [(ngModel)]="user.surname"></ion-input>
     </ion-item>
-    <div padding-left padding-right><p class="item-text">
-      En la izquierda el número de run. En la derecha, el código verificador.
-      Si termina en K, reemplace con 1.
-    </p></div>
-    <ion-grid>
-      <ion-row>
-        <ion-col col-7>
-          <ion-item padding-left padding-right>
-            <ion-label stacked>RUN (ej: 12345678)</ion-label>
-            <ion-input type="number" placeholder="{{ (usr|async)?.run }}" [(ngModel)]="user.run"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col col-5>
-          <ion-item padding-left padding-right>
-            <ion-label stacked>N° Ver (ej: 0)</ion-label>
-            <ion-input type="number" placeholder="{{ (usr|async)?.v_run }}" [(ngModel)]="user.v_run"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-item padding>
+      <ion-label stacked>RUN</ion-label>
+      <ion-input type="number" placeholder="{{ (usr|async)?.run }}" [(ngModel)]="user.run"></ion-input>
+    </ion-item>
     <ion-item padding>
       <ion-label stacked>Fecha de nacimiento</ion-label>
       <ion-datetime displayFormat='DD MM YYYY' placeholder="{{ (usr|async)?.dateBirth }}" [(ngModel)]="user.dateBirth"></ion-datetime>
     </ion-item>
     <ion-item padding>
       <ion-label stacked>Edad</ion-label>
-      <ion-input type="number" placeholder="{{ (usr|async)?.age }}" [(ngModel)]="user.age"></ion-input>
+      <ion-input type="number" placeholder="{{user.age}}" [(ngModel)]="user.age"></ion-input>
     </ion-item>
     <ion-item padding>
       <ion-label stacked>Peso (Kg)</ion-label>

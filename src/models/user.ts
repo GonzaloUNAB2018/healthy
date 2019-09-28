@@ -4,7 +4,7 @@ export class User {
     confirm_password: string;   //CONFIRMACIÓN DE CONTRASEÑA PARA REGISTRO
     phone: number;              //TELÉFONO PRINCIPAL DEL USUARIO
     phoneNumber: string;
-    run: number;                //ROL UNICO TRIBUTARIO DEL USUARIO (SIN NUMERO VERIFICADOR)
+    run: string;                //ROL UNICO TRIBUTARIO DEL USUARIO (SIN NUMERO VERIFICADOR)
     v_run: number;              //DIGITO VERIFICADOR DEL RUN DEL USUARIO
     name: string;               //PRIMER NOMBRE DEL USUARIO
     surname: string;            //APELLIDO DEL USUARIO

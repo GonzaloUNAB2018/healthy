@@ -89,28 +89,49 @@ export class HomePage {
     this.uid = this.afUser.uid;
     this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
       let usr : any = user
-      this.user.uid = usr.uid;
-      this.user.nickName = usr.nickName;
       this.user.name = usr.name;
-      this.user.surname = usr.surname;
-      this.user.run = usr.run;
-      this.user.dateBirth = usr.dateBirth;
       this.user.weight = usr.weight;
       this.user.height = usr.height;
-      this.user.profilePhoto = usr.profilePhoto;
       console.log(user);
       if(
-        !this.user.nickName||
-        !this.user.name||
-        !this.user.surname||
-        !this.user.run||
-        !this.user.dateBirth||
         !this.user.weight||
         !this.user.height){
-        var edit : boolean = true;
-        this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
+        //var edit : boolean = true;
+        const alert = this.alertCtrl.create({
+          title: 'Agregue su peso y altura',
+          inputs: [
+            {
+              name: 'weight',
+              placeholder: 'Peso en Kg',
+              type: 'number'
+            },
+            {
+              name: 'height',
+              placeholder: 'Altura en metros',
+              type: 'number'
+            }
+          ],
+          buttons: [
+            {
+              text: 'Ok',
+              handler: data => {
+                if (data.weight, data.height) {
+                  this.user.weight = data.weight;
+                  this.user.height = data.height;
+                  this.afProvider.updateUserData(this.uid, this.user);
+                } else {
+                  this.alertIfNotData();
+                  alert.present();
+                  return false;
+                }
+              }
+            }
+          ]
+        });
+        alert.present();
+        //this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
       }else{
-        this.toast(this.user.nickName);
+        this.toast(this.user.name);
       }
     });      
     
@@ -159,6 +180,10 @@ export class HomePage {
       }
     });
     
+  }
+
+  alertIfNotData(){
+    alert('Rellene los datos')
   }
 
   
@@ -272,62 +297,11 @@ export class HomePage {
       ]
     });
     alert.present()
-
   }
   
   loadDb(){
     this.navCtrl.push(LoadDatabasePage);
   }
 
-  alertaNuevoUsuario() {
-       const alert = this.alertCtrl.create({
-         title: 'Complete los datos',
-         inputs: [
-           {
-             name: 'nickName',
-             placeholder: 'Ingrese un Nombre o Sobrenombre'
-           },
-           {
-             name: 'RUN',
-             placeholder: 'Ingrese RUN sin Dígito Verificador',
-             type: 'number'
-           }
-         ],
-         buttons: [
-           {
-             text: 'Cancel',
-             role: 'cancel',
-             handler: data => {
-               console.log('Cancel clicked');
-               this.navCtrl.setRoot(InitialPage);
-             }
-           },
-           {
-             text: 'Ok',
-             handler: data => {
-              this.updateUser(data.nickName, data.RUN);
-             }
-          }
-         ]
-       });
-      alert.present();
-    }
-
-    updateUser(nickName, RUN){
-      this.loadUpdateUserData();
-      this.user.uid = this.afUser.uid;
-      this.user.nickName = nickName;
-      this.user.run = RUN;
-      this.afAuth.auth.currentUser.updateProfile({
-        displayName: nickName
-      }).then(()=>{
-        this.afProvider.updateUserData(this.uid, this.user);
-        this.updateUserLoader.dismiss();
-      })
-      
-    
-      
-    }
-  /////////////////////////////////////////////////////////////////////////////////
   
 }
