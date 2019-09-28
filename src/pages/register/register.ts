@@ -12,7 +12,8 @@ import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire'
 })
 export class RegisterPage {
 
-  user = {} as User
+  user = {} as User;
+  changePage: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -27,18 +28,34 @@ export class RegisterPage {
     console.log('ionViewDidLoad RegisterPage');
   }
 
+  ionViewCanLeave(): boolean{
+    if(this.changePage === true){
+       return true;
+     } else if(this.changePage === false) {
+       return false;
+     }
+   }
+
   registre(){
     if(this.user.email != null){
       if(this.user.password != null){
         if(this.user.confirm_password != null){
           if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone){
             if(this.user.password === this.user.confirm_password){
-              this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
-                this.presentLoading();
-              }).then(()=>{
-                this.user.uid = this.afAuth.auth.currentUser.uid;
-                this.afProvider.updateUserData(this.user.uid, this.user);
-                this.navCtrl.setRoot(LoginPage);
+              this.changePage = false;
+              const loader = this.loadingCtrl.create({
+                content: "Registrando Usuario...",
+              });
+              loader.present();
+              this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
+                if(user){
+                  this.user.uid = this.afAuth.auth.currentUser.uid;
+                  this.afProvider.updateUserData(this.user.uid, this.user);
+                  this.afAuth.auth.signOut().then(()=>{
+                    this.changePage = true;
+                    this.navCtrl.pop();
+                  })
+                }
               })
             }else{
               alert('Contraseñas ingresadas no coinciden. Intente nuevamente')
