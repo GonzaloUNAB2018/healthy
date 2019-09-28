@@ -39,7 +39,11 @@ export class MyApp {
       
       this.platform.ready().then(() => {
         this.statusBar.styleDefault();
-        this.createDatabase();
+        if(platform.is('cordova')){
+          this.createDatabase();
+        }else{
+          alert('No se crea base de datos')
+        }
         this.afAuth.auth.onAuthStateChanged(user=>{
           if(user){
             this.nav.setRoot(HomePage);

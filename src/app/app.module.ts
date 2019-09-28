@@ -18,6 +18,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { Gyroscope } from '@ionic-native/gyroscope'
 import { Health } from '@ionic-native/health';
 import { Camera } from '@ionic-native/camera';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 
 //FIREBASE
 import {firebase} from './firebase.module';
@@ -35,7 +36,6 @@ import { AnguarFireProvider } from '../providers/anguar-fire/anguar-fire';
 //Pages
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
 import { LoginPageModule } from '../pages/login/login.module';
 import { RegisterPageModule } from '../pages/register/register.module';
 import { ResetPassPageModule } from '../pages/reset-pass/reset-pass.module';
@@ -106,7 +106,8 @@ import { HomePageModule } from '../pages/home/home.module';
     Health,
     GoogleFitProvider,
     HealthDbProvider,
-    Camera
+    Camera,
+    BackgroundGeolocation
   ]
 })
 export class AppModule {}

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
-import { Geolocation } from '@ionic-native/geolocation';
+//import { Geolocation } from '@ionic-native/geolocation';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { Stepcounter } from '@ionic-native/stepcounter';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { HomePage } from '../home/home';
+import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation';
 
 @IonicPage()
 @Component({
@@ -20,6 +20,8 @@ export class CaminataPage {
   steps_tasks: any[] = [];
   startingOffset = 0;
   steps: number = 0;
+  heading: number = 0;
+  today: any;
 
   private interval: any;
   private dataInterval: any;
@@ -27,6 +29,7 @@ export class CaminataPage {
   public time: string = '00:00';
   public bg_time: string = '00:00';
   public showSeconds: boolean = true;
+  public workstarted: boolean = false;
   cdown_ok: boolean;
   cdown: any;
   cdown_ss: number = 5;
@@ -34,47 +37,56 @@ export class CaminataPage {
   hour: string;
   stepSensorTrue: string;
   formatted_time: string = '00:00';
+  provider: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    private geolocation: Geolocation,
+    //private geolocation: Geolocation,
     private stepsDbService: StepsDbProvider,
     private stepcounter: Stepcounter,
     private platform: Platform,
     private backgroundMode: BackgroundMode,
-    ) {
-
-      this.stepcounter.deviceCanCountSteps().then(data=>{
-        console.log(data);
-        if(data){
-          this.stepSensorTrue = 'Su teléfono cuenta con sensor contador de pasos'
-          /*this.stepcounter.getHistory().then(history=>{
-            console.log(history)
-          });*/
-          this.stepcounter.getTodayStepCount().then(toDay=>{
-            console.log(toDay)
-          });
-        }else{
-          alert('Su Teléfono no cuenta con sensor para contar los pasos')
-        }
-      });
-    
+    private backgroundGeolocation: BackgroundGeolocation
+    )
+    {
       
-  }
+      if(this.platform.is('android')){
+        this.stepcounter.deviceCanCountSteps().then(data=>{
+          if(data){
+            this.stepSensorTrue = 'Su teléfono cuenta con sensor contador de pasos';
+            this.stepcounter.getTodayStepCount().then(toDay=>{
+              console.log(toDay)
+            });
+            this.getGeolocationData();
+          }else{
+            alert('Su teléfono no cuenta con sensor para contar los pasos. Aplicación o funcionará correctamente.');
+          }
+        });
+      }
+      
+    }
 
   ionViewDidLoad() {
-    this.countDown()
+    this.countDown();
+  }
+
+  ionViewCanLeave(): boolean{
+    console.log(this.workstarted)
+    if(this.workstarted===true){
+      return false;
+    }else if(this.workstarted===false){
+      return true;
+    };
   }
 
   stopAll(){
+    this.workstarted = false;
     this.stop();
-    this.loadStopGetData();
-    setTimeout(()=>{
-      this.navCtrl.setRoot(HomePage)
-    },500)
-    
+    setTimeout(() => {
+      this.navCtrl.popToRoot();
+    }, 1000);
   }
 
   countDown(){
@@ -84,7 +96,9 @@ export class CaminataPage {
       if(this.cdown_ss<1){
         this.stopCountDown();
         this.start();
-        this.initSteps();
+        if(this.platform.is('cordova')){
+          this.initSteps();
+        }        
         this.cdown_ok=false;
       }
     },1000);
@@ -94,25 +108,46 @@ export class CaminataPage {
     clearInterval(this.cdown);
   }
 
+  getGeolocationData(){
+    let config : BackgroundGeolocationConfig  = {
+      interval: 500,
+      notificationTitle: 'Registro de geolocalización',
+      notificationText: 'Mientras camina se ejecuta el registro',
+      notificationIconColor: '#05cc02'
+    }
+    this.backgroundGeolocation.configure(config).then(()=>{
+      this.backgroundGeolocation.on(BackgroundGeolocationEvents.location)
+      .subscribe((location:BackgroundGeolocationResponse)=>{
+          this.lat = location.latitude;
+          this.lng = location.longitude;
+          if(location.speed===undefined){
+            this.speed = 0;
+          }else{
+            this.speed = location.speed;
+          }
+          this.alt = location.altitude;
+          this.provider = location.provider;
+      });
+    });
+    this.backgroundGeolocation.start();
+  }
+
   start() {
+    this.workstarted = true;
     this.interval = window.setInterval(() => {
       this.seconds++;
       this.time = this.getTimeFormatted();
       document.getElementById('time').innerHTML=this.time;
-      //Toma la ubicación Geográfica!
-      this.geolocation.getCurrentPosition().then(co=>{
-        this.lat = co.coords.latitude;
-        this.lng = co.coords.longitude;
-        this.alt = co.coords.altitude;
-        this.speed = co.coords.speed
-      });
-      this.backgroundMode.configure({
-        title: '¡Caminando!',
-        text: this.time+' Presione notificación para continuar',
-        color: 'primary',
-        hidden: false,
-        bigText: true,
-      });
+      if(this.platform.is('cordova')){
+        this.backgroundMode.configure({
+          title: '¡Caminando!',
+          text: this.time+' Presione notificación para continuar',
+          color: 'primary',
+          hidden: false,
+          bigText: true,
+        });
+      }
+      
     }, 1000);
     this.bgNotify();
   }
@@ -155,8 +190,11 @@ export class CaminataPage {
     window.clearInterval(this.interval);
     window.clearInterval(this.dataInterval);
     this.seconds = 0;
-    this.stopSteps();
-    this.stopNotify();
+    if(this.platform.is('cordova')){
+      this.stopSteps();
+      this.stopNotify();
+      this.backgroundGeolocation.stop();
+    }
   }
 
   getTimeFormatted() {
@@ -177,7 +215,7 @@ export class CaminataPage {
       seconds_st = "0" + seconds.toString();
     }
 
-    this.formatted_time = '0';
+    this.formatted_time = '';
     if (hours > 0) {
       this.formatted_time += hours_st + ':';
     }
@@ -190,11 +228,9 @@ export class CaminataPage {
 
   stopSteps(){
     this.loadStopGetData();
-    this.stepcounter.stop();
-  }
-
-  toHomePage(){
-    this.navCtrl.pop();
+    if(this.platform.is('cordova')){
+      this.stepcounter.stop();
+    }
   }
 
   loadInitGetData() {
@@ -214,8 +250,8 @@ export class CaminataPage {
   }
 
   dateTime(){
-    var today = new Date();
-    var seg = Number(today.getSeconds());
+    this.today = new Date();
+    /*var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
     var min = Number(today.getMinutes());
     var mi = String(today.getMinutes());
@@ -230,20 +266,19 @@ export class CaminataPage {
     if(seg>=0&&seg<10){
       ss = 0+ss
     };
-    this.hour = hh+':'+mi+':'+ss;
+    this.hour = hh+':'+mi+':'+ss;*/
   }
 
   onInterval(){
     this.stepcounter.getStepCount().then(steps =>{
       this.steps = steps;
       console.log(this.steps)
-    })
-    
-    this.dateTime();
-
+    });
+    this.today = new Date();   
+    //this.dateTime();
     var data_steps ={
       id : Date.now(),
-      date : this.date,
+      date : this.today,
       time: this.hour,
       type : 'Caminata',
       steps : this.steps,
@@ -252,10 +287,13 @@ export class CaminataPage {
       alt : this.alt,
       speed : this.speed,
     };
-    this.stepsDbService.create(data_steps).then(response => {
-      this.steps_tasks.unshift( data_steps );
-      console.table(this.steps_tasks);
-    })
+    if(this.platform.is('cordova')){
+      this.stepsDbService.create(data_steps).then(response => {
+        this.steps_tasks.unshift( data_steps );
+      });
+      console.log(this.navCtrl.canGoBack())
+      console.log(this.lat, this.lng, this.speed, this.alt, this.provider)
+    }
   }
 
 }

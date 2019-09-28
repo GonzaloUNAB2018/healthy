@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController, ToastController, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ToastController, NavParams, Platform } from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { InitialPage } from '../initial/initial';
 import { ConfigurationPage } from '../configuration/configuration';
@@ -64,6 +64,7 @@ export class HomePage {
   updateUserLoader: any;
 
   constructor(
+    private platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
@@ -117,21 +118,42 @@ export class HomePage {
       this.requiereUpdate = requiereUpdate;
       if(this.requiereUpdate.requiere==='0.1.0.4'){
         console.log('No requiere actualizar');
-        this.googleFitProvider.accesToHealth()
-        .then(available=>{
-          if(available){
-            this.health=true;
-            this.googleFitProvider.getPermissionToHealthData();
-          }else{
-            this.health=false;
-          }
-        })
-        .then(()=>{
-          console.log(this.health)
-        }).catch(e=>{
-          console.log(e);
-          alert(e)
-        })
+        if(this.platform.is('cordova')){
+          let loading = this.loadingCtrl.create({
+            content: 'Conectando con Google Fit'
+          });
+          loading.present();
+          setTimeout(() => {
+            this.googleFitProvider.accesToHealth()
+            .then(available=>{
+              if(available){
+                this.health=true;
+                this.googleFitProvider.getPermissionToHealthData();
+                loading.dismiss();
+              }else{
+                this.health=false;
+                var alert = this.alertCtrl.create({
+                  title: 'No habrá conexión con datos de Google Fit',
+                  buttons: [
+                    {
+                      text: 'Ok',
+                      role: 'ok',
+                      handler(){
+                        loading.dismiss();
+                      }
+                    }
+                  ]
+                });
+                alert.present();
+              }
+            })
+            .then(()=>{
+              console.log(this.health)
+            })
+          }, 2000);
+        }else{
+          alert('Sin conexión a google fit')
+        }
       }else{
         this.requiereUpdateAppFunction()
       }
@@ -196,18 +218,16 @@ export class HomePage {
   }
 
   toStepsPage(){
-    this.navCtrl.setRoot(CaminataPage);
+    this.navCtrl.push(CaminataPage);
   }
 
   toJumpPage(){
-    this.navCtrl.setRoot(SaltosPage);
+    this.navCtrl.push(SaltosPage);
   }
 
   toABSPage(){
-    this.navCtrl.setRoot(AbdominalesPage);
+    this.navCtrl.push(AbdominalesPage);
   }
-
-  
 
   loadUpdateUserData() {
     this.updateUserLoader = this.loadingCtrl.create({
@@ -305,8 +325,9 @@ export class HomePage {
         this.updateUserLoader.dismiss();
       })
       
+    
+      
     }
-
   /////////////////////////////////////////////////////////////////////////////////
   
 }
