@@ -56,6 +56,8 @@ export class MyApp {
        
   }
 
+  enableProdMode(){}
+
   private createDatabase(){
     this.sqlite.create({
       name: 'data.db',

@@ -41,36 +41,50 @@ export class RegisterPage {
       if(this.user.password != null){
         if(this.user.confirm_password != null){
           if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone){
-            if(this.user.password === this.user.confirm_password){
-              this.changePage = false;
-              const loader = this.loadingCtrl.create({
-                content: "Registrando Usuario...",
-              });
-              loader.present();
-              this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
-                if(user){
-                  this.user.uid = this.afAuth.auth.currentUser.uid;
-                  this.afProvider.updateUserData(this.user.uid, this.user);
-                  this.afAuth.auth.signOut().then(()=>{
-                    this.changePage = true;
-                    this.navCtrl.pop();
-                  })
-                }
-              })
+            if(this.user.phone.toString().length >= 9){
+              if(this.user.password === this.user.confirm_password){
+                this.changePage = false;
+                const loader = this.loadingCtrl.create({
+                  content: "Registrando Usuario...",
+                });
+                loader.present();
+                this.user.phoneNumber = '+569'+this.user.phone;
+                this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
+                  this.afAuth.auth.currentUser.updateProfile({
+                    displayName: this.user.name+' '+this.user.surname
+                  });
+                  if(user){
+                    this.user.uid = this.afAuth.auth.currentUser.uid;
+                    this.afProvider.updateUserData(this.user.uid, this.user);
+                    this.afAuth.auth.signOut().then(()=>{
+                      loader.dismiss();
+                      this.changePage = true;
+                      this.navCtrl.pop();
+                    }).catch(e=>{
+                      loader.dismiss();
+                      this.changePage = true;
+                      this.navCtrl.pop();
+                      alert(e);
+                    })
+                  }
+                })
+              }else{
+                alert('Contraseñas ingresadas no coinciden. Intente nuevamente');
+              }
             }else{
-              alert('Contraseñas ingresadas no coinciden. Intente nuevamente')
+              alert('Número de teléfono debe contar con 9 dígitos');
             }
           }else{
-            alert('Faltan datos')
+            alert('Faltan datos');
           }
         }else{
-          alert('Ingrese de nuevo la contraseña')
+          alert('Ingrese de nuevo la contraseña');
         }
       }else{
-        alert('Ingrese una contraseña')
+        alert('Ingrese una contraseña');
       }
     }else{
-      alert('Ingrese email')
+      alert('Ingrese email');
     }
     
   }

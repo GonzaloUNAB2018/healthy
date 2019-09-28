@@ -2,39 +2,39 @@
   <ion-navbar>
   </ion-navbar>
   <ion-title align="center" padding-top>Registre sus datos</ion-title>
-  <ion-list>
-    <ion-item padding>
+  <ion-list padding>
+    <ion-item padding-left>
       <ion-label floating>Nombre</ion-label>
       <ion-input type="text" placeholder="Nombre" [(ngModel)]="user.name"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Apellido</ion-label>
       <ion-input type="text" placeholder="Apellido" [(ngModel)]="user.surname"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Fecha de nacimiento</ion-label>
       <ion-datetime displayFormat='DD MM YYYY'  [(ngModel)]="user.dateBirth"></ion-datetime>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Sexo</ion-label>
       <ion-select placeholder="Sexo" [(ngModel)]="user.sex">
         <ion-option value="man">Hombre</ion-option>
         <ion-option value="woman">Mujer</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item padding>
-      <ion-label floating>Teléfono (opcional)</ion-label>
-      <ion-input type="number" placeholder="Teléfono (opcional)" [(ngModel)]="user.phone" maxlength="9"></ion-input>
+    <ion-item padding-left>
+      <ion-label floating>Teléfono (9 números)</ion-label>
+      <ion-input type="number" placeholder="Teléfono (9 números)" [(ngModel)]="user.phone" maxlength="9"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Email</ion-label>
       <ion-input type="email" placeholder="Email" [(ngModel)]="user.email"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Contraseña 6 dígitos o letras</ion-label>
       <ion-input type="password" placeholder="Contraseña 6 dígitos o letras" [(ngModel)]="user.password" maxlength="6"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item padding-left>
       <ion-label floating>Repita Contraseña</ion-label>
       <ion-input type="password" placeholder="Repita Contraseña" [(ngModel)]="user.confirm_password" maxlength="6"></ion-input>
     </ion-item>
@@ -43,5 +43,7 @@
   <button ion-button round full color="secondary" (click)="registre()">
       Registrar
   </button>
+  <br>
+  <br>
 
 </ion-content>

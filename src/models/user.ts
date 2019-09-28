@@ -2,7 +2,8 @@ export class User {
     email: string;              //EMAIL DEL USUARIO
     password: string;           //CONTRASEÑA PARA INICIO DE SESIÓN
     confirm_password: string;   //CONFIRMACIÓN DE CONTRASEÑA PARA REGISTRO
-    phone: number;               //TELÉFONO PRINCIPAL DEL USUARIO
+    phone: number;              //TELÉFONO PRINCIPAL DEL USUARIO
+    phoneNumber: string;
     run: number;                //ROL UNICO TRIBUTARIO DEL USUARIO (SIN NUMERO VERIFICADOR)
     v_run: number;              //DIGITO VERIFICADOR DEL RUN DEL USUARIO
     name: string;               //PRIMER NOMBRE DEL USUARIO

@@ -53,11 +53,11 @@ export class AnguarFireProvider {
   }
 
   public getUserInfo(uid){
-    return this.afDb.object('Pacientes/'+uid+'/User_Info')
+    return this.afDb.object('Pacientes/Datos_Personales/'+uid+'/User_Info')
   }
 
   updateUserData(uid, user){
-    this.afDb.database.ref('Pacientes/'+uid+'/User_Info').update(user);
+    this.afDb.database.ref('Pacientes/Datos_Personales/'+uid+'/User_Info').update(user);
   }
 
   userHearthRateSetLastData(uid, rate){
