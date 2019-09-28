@@ -31,16 +31,20 @@ export class RegisterPage {
     if(this.user.email != null){
       if(this.user.password != null){
         if(this.user.confirm_password != null){
-          if(this.user.password === this.user.confirm_password){
-            this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
-              this.presentLoading();
-            }).then(()=>{
-              this.user.uid = this.afAuth.auth.currentUser.uid;
-              this.afProvider.updateUserData(this.user.uid, this.user);
-              this.navCtrl.setRoot(LoginPage);
-            })
+          if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone){
+            if(this.user.password === this.user.confirm_password){
+              this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(()=>{
+                this.presentLoading();
+              }).then(()=>{
+                this.user.uid = this.afAuth.auth.currentUser.uid;
+                this.afProvider.updateUserData(this.user.uid, this.user);
+                this.navCtrl.setRoot(LoginPage);
+              })
+            }else{
+              alert('Contraseñas ingresadas no coinciden. Intente nuevamente')
+            }
           }else{
-            alert('Contraseñas ingresadas no coinciden. Intente nuevamente')
+            alert('Faltan datos')
           }
         }else{
           alert('Ingrese de nuevo la contraseña')

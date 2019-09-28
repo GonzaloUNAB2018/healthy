@@ -2,7 +2,7 @@ export class User {
     email: string;              //EMAIL DEL USUARIO
     password: string;           //CONTRASEÑA PARA INICIO DE SESIÓN
     confirm_password: string;   //CONFIRMACIÓN DE CONTRASEÑA PARA REGISTRO
-    fone: number;               //TELÉFONO PRINCIPAL DEL USUARIO
+    phone: number;               //TELÉFONO PRINCIPAL DEL USUARIO
     run: number;                //ROL UNICO TRIBUTARIO DEL USUARIO (SIN NUMERO VERIFICADOR)
     v_run: number;              //DIGITO VERIFICADOR DEL RUN DEL USUARIO
     name: string;               //PRIMER NOMBRE DEL USUARIO
@@ -17,4 +17,5 @@ export class User {
     weight: number;             //ALTURA DEL USUARIO EN METROS
     height: number;             //PESO DEL USUARIO EN KILOGRAMOS
     lastRateSolicitude: string; //ULTIMA FECHA DE ACTUALIZACIÓN DE DATOS DESDE GOOGLE FIT
+    sex: string;
 }
