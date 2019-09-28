@@ -17,7 +17,7 @@ export class EditProfilePage {
   usr : Observable<any>;
   edit: boolean = false;
   usr_: any;
-  
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -44,7 +44,6 @@ export class EditProfilePage {
       if(this.usr_){
         
         if(!this.usr_.profilePhoto){
-          //this.user.profilePhoto = this.profilePhoto;
           this.afProvider.updateUserData(this.user.uid, this.user);
         }
       }

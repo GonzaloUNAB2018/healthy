@@ -16,7 +16,6 @@ import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { ProfilePage } from '../profile/profile';
 import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
-import { EditProfilePage } from '../edit-profile/edit-profile';
 
 
 @Component({
@@ -59,7 +58,7 @@ export class HomePage {
   uid: any;
 
   requiereUpdate: any;
-  versionApp = '0.1.0.4';
+  versionApp = '0.1.0.5';
   health : boolean;
   updateUserLoader: any;
 
@@ -137,7 +136,7 @@ export class HomePage {
     
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
-      if(this.requiereUpdate.requiere==='0.1.0.4'){
+      if(this.requiereUpdate.requiere==='0.1.0.5'){
         console.log('No requiere actualizar');
         if(this.platform.is('cordova')){
           let loading = this.loadingCtrl.create({
