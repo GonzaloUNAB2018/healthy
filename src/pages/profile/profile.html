@@ -14,16 +14,12 @@
 
   <ion-list *ngIf="usr" padding-right>
     <ion-item>
-      <ion-label class="item-text">Apodo: </ion-label>
-      <p item-end class="item-text"> {{ (userFromFB | async)?.nickName }} </p>
-    </ion-item>
-    <ion-item>
       <ion-label class="item-text">Nombre: </ion-label>
       <p item-end class="item-text"> {{ (userFromFB | async)?.name }} {{ (userFromFB | async)?.surname }} </p>
     </ion-item>
     <ion-item>
       <ion-label class="item-text">RUN: </ion-label>
-      <p item-end class="item-text"> {{ (userFromFB | async)?.run }} - {{ (userFromFB | async)?.v_run }} </p>
+      <p item-end class="item-text"> {{ run }} </p>
     </ion-item>
     <ion-item>
       <ion-label class="item-text">Fecha de Nacimiento: </ion-label>
@@ -31,7 +27,7 @@
     </ion-item>
     <ion-item>
       <ion-label class="item-text">Edad: </ion-label>
-      <p item-end class="item-text"> {{ (userFromFB | async)?.age }} años</p>
+      <p item-end class="item-text"> {{ age }} años</p>
     </ion-item>
     <ion-item>
       <ion-label class="item-text">Estatura: </ion-label>

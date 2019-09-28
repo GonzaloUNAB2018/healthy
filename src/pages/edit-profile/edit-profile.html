@@ -2,42 +2,25 @@
   <ion-navbar *ngIf="!edit">
     
   </ion-navbar>
-  <!--div>
-    <ion-buttons *ngIf="edit">
-      <button ion-button icon-only (click)="back()"><ion-icon name="arrow-back" class="navbar-logo"></ion-icon></button>
-    </ion-buttons>
-  </div-->
   <ion-title align="center" padding-top>Edite sus datos</ion-title>
   <ion-list *ngIf="usr">
-    <ion-item padding>
-      <ion-label stacked>Apodo</ion-label>
-      <ion-input type="text" placeholder="{{ (usr|async)?.nickName }}" [(ngModel)]="user.nickName"></ion-input>
-    </ion-item>
-    <ion-item padding>
+    <ion-item>
       <ion-label stacked>Nombre</ion-label>
       <ion-input type="text" placeholder="{{ (usr|async)?.name }}" [(ngModel)]="user.name"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item>
       <ion-label stacked>Apellido</ion-label>
       <ion-input type="text" placeholder="{{ (usr|async)?.surname }}" [(ngModel)]="user.surname"></ion-input>
     </ion-item>
-    <ion-item padding>
-      <ion-label stacked>RUN</ion-label>
-      <ion-input type="number" placeholder="{{ (usr|async)?.run }}" [(ngModel)]="user.run"></ion-input>
-    </ion-item>
-    <ion-item padding>
+    <ion-item>
       <ion-label stacked>Fecha de nacimiento</ion-label>
       <ion-datetime displayFormat='DD MM YYYY' placeholder="{{ (usr|async)?.dateBirth }}" [(ngModel)]="user.dateBirth"></ion-datetime>
     </ion-item>
-    <ion-item padding>
-      <ion-label stacked>Edad</ion-label>
-      <ion-input type="number" placeholder="{{user.age}}" [(ngModel)]="user.age"></ion-input>
-    </ion-item>
-    <ion-item padding>
+    <ion-item>
       <ion-label stacked>Peso (Kg)</ion-label>
       <ion-input type="number" placeholder="{{ (usr|async)?.weight }}" [(ngModel)]="user.weight"></ion-input>
     </ion-item>
-    <ion-item padding>
+    <ion-item>
       <ion-label stacked>Altura (Mts)</ion-label>
       <ion-input type="number" placeholder="{{ (usr|async)?.height }}" [(ngModel)]="user.height"></ion-input>
     </ion-item>
