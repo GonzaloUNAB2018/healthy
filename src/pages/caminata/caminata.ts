@@ -152,7 +152,6 @@ export class CaminataPage {
           bigText: true,
         });
       }
-      
     }, 1000);
     this.bgNotify();
   }
@@ -299,8 +298,6 @@ export class CaminataPage {
       this.stepsDbService.create(data_steps).then(response => {
         this.steps_tasks.unshift( data_steps );
       });
-      console.log(this.navCtrl.canGoBack())
-      console.log(this.lat, this.lng, this.speed, this.alt, this.provider)
     }
   }
 

@@ -4,8 +4,6 @@ import { ABSDbProvider } from '../../providers/ABS-db/ABSs-db';
 import { DeviceMotion, DeviceMotionAccelerationData } from '@ionic-native/device-motion';
 import { Gyroscope, GyroscopeOrientation } from '@ionic-native/gyroscope';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { HomePage } from '../home/home';
-
 
 @IonicPage()
 @Component({
@@ -32,6 +30,12 @@ export class AbdominalesPage {
   date: string;
   hour: string;
   w: any;
+  public workstarted: boolean = false;
+  today: any;
+  save_time: string;
+  excercise = {
+    id: null
+  };
 
   constructor(
     public navCtrl: NavController,
@@ -48,37 +52,63 @@ export class AbdominalesPage {
 
   ionViewDidLoad() {
     this.countDown()
-  }
+  };
 
-  ionViewWillLeave(){
-    //this.stop();
-  }
+  ionViewCanLeave(): boolean{
+    console.log(this.workstarted)
+    if(this.workstarted===true){
+      return false;
+    }else if(this.workstarted===false){
+      return true;
+    };
+  };
+
+  stopAll(){
+    this.workstarted = false;
+    this.stop();
+    setTimeout(() => {
+      this.navCtrl.popToRoot();
+    }, 1000);
+  };
+
+  countDown(){
+    this.cdown_ok = true;
+    this.cdown = setInterval(()=>{
+      this.cdown_ss=this.cdown_ss-1;
+      if(this.cdown_ss<1){
+        this.stopCountDown();
+        this.start();
+        if(this.platform.is('cordova')){
+          this.initABS();
+        }
+        this.cdown_ok=false;
+      }
+    },1000);
+  };
+
+  stopCountDown(){
+    this.excercise.id = Date.now()/0.5;
+    clearInterval(this.cdown);
+  };
 
   start() {
-    this.time = '00:00'
+    this.workstarted = true;
     this.interval = window.setInterval(() => {
       this.seconds++;
       this.time = this.getTimeFormatted();
       document.getElementById('time').innerHTML=this.time;
-      this.backgroundMode.configure({
-        title: '¡Abdominales!',
-        text: this.time+' Presione notificación para continuar',
-        color: 'primary',
-        hidden: false,
-        bigText: true,
-      });
+      if(this.platform.is('cordova')){
+        this.backgroundMode.configure({
+          title: '¡Abdominales!',
+          text: this.time+' Presione notificación para continuar',
+          color: 'primary',
+          hidden: false,
+          bigText: true,
+        });
+      }
     }, 1000);
     this.bgNotify();
-  }
-
-  stop() {
-    this.stopNotify();
-    window.clearInterval(this.interval);
-    this.seconds = 0;
-    this.stopABS();
-    this.navCtrl.setRoot(HomePage)
-
-  }
+  };
 
   bgNotify(){
     
@@ -89,13 +119,22 @@ export class AbdominalesPage {
       }else{
       }
     }
-  }
+  };
 
   stopNotify(){
     if(this.platform.is('cordova')){
       this.backgroundMode.disable();
     }
-  }
+  };
+
+  stop() {
+    this.stopNotify();
+    window.clearInterval(this.interval);
+    this.seconds = 0;
+    if(this.platform.is('cordova')){
+      this.stopABS();
+    }
+  };
 
   getTimeFormatted() {
     var hours   = Math.floor(this.seconds / 3600);
@@ -125,26 +164,11 @@ export class AbdominalesPage {
     }
     return formatted_time;
   }
-
-  countDown(){
-    this.cdown_ok = true;
-    this.cdown = setInterval(()=>{
-      this.cdown_ss=this.cdown_ss-1;
-      if(this.cdown_ss<1){
-        this.stopCountDown();
-        this.start();
-        this.initABS();
-        this.cdown_ok=false;
-      }
-    },1000);
-  }
-
-  stopCountDown(){
-    clearInterval(this.cdown);
-  }
-
+  
   dateTime(){
-    var today = new Date();
+    var m = this.today.getMonth()+1
+    this.save_time = this.today.getDate()+'-'+m+'-'+this.today.getFullYear()
+    /*var today = new Date();
     var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
     var min = Number(today.getMinutes());
@@ -160,12 +184,11 @@ export class AbdominalesPage {
     if(seg>=0&&seg<10){
       ss = 0+ss
     };
-    this.hour = hh+':'+mi+':'+ss;
+    this.hour = hh+':'+mi+':'+ss;*/
 
-  }
+  };
 
   initABS(){
-
     this.w = this.deviceMotion.watchAcceleration({frequency: 500})
     .subscribe((acceleration: DeviceMotionAccelerationData) => {
       this.l_accX = acceleration.x;
@@ -176,11 +199,13 @@ export class AbdominalesPage {
         this.g_accY = orientation.y;
         this.g_accZ = orientation.z;
       }).catch();
+      this.today = new Date(); 
       this.dateTime();
       var data_ABS = {
+        eid : this.excercise.id,
         id : Date.now(),
-        date : this.date,
-        time: this.hour,
+        date : this.today,
+        save_time: this.save_time,
         type : 'Abdominales',
         x : this.l_accX,
         y : this.l_accY,
@@ -194,12 +219,12 @@ export class AbdominalesPage {
       })
     });
 
-  }
+  };
 
   stopABS(){
     this.loadStopGetData();
     this.w.unsubscribe();
-  }
+  };
 
   loadInitGetData() {
     const loader = this.loadingCtrl.create({
@@ -207,7 +232,7 @@ export class AbdominalesPage {
       duration: 1000
     });
     loader.present();
-  }
+  };
 
   loadStopGetData() {
     const loader = this.loadingCtrl.create({
@@ -215,7 +240,7 @@ export class AbdominalesPage {
       duration: 1000
     });
     loader.present();
-  }
+  };
   
 
 }
