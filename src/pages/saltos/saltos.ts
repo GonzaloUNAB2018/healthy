@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, LoadingController, Platform } from
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
 import { DeviceMotion, DeviceMotionAccelerationData } from '@ionic-native/device-motion';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -85,7 +84,7 @@ export class SaltosPage {
   };
 
   stopCountDown(){
-    this.excercise.id = Date.now()/0.5;
+    this.excercise.id = Date.now()*0.5;
     clearInterval(this.cdown);
   };
 

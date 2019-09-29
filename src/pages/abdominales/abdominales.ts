@@ -87,7 +87,7 @@ export class AbdominalesPage {
   };
 
   stopCountDown(){
-    this.excercise.id = Date.now()/0.5;
+    this.excercise.id = Date.now()*0.5;
     clearInterval(this.cdown);
   };
 

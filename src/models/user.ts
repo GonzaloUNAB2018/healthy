@@ -18,5 +18,7 @@ export class User {
     weight: number;             //ALTURA DEL USUARIO EN METROS
     height: number;             //PESO DEL USUARIO EN KILOGRAMOS
     lastRateSolicitude: string; //ULTIMA FECHA DE ACTUALIZACIÓN DE DATOS DESDE GOOGLE FIT
+    lastExerciceLoad: number;
     sex: string;
+
 }

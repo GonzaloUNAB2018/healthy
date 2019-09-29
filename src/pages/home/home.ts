@@ -116,6 +116,7 @@ export class HomePage {
               text: 'Ok',
               handler: data => {
                 if (data.weight, data.height) {
+                  this.user.lastExerciceLoad = Math.trunc(Date.now()*0.5)
                   this.user.weight = data.weight;
                   this.user.height = data.height;
                   this.afProvider.updateUserData(this.uid, this.user);
@@ -304,7 +305,7 @@ export class HomePage {
   }
   
   loadDb(){
-    this.navCtrl.push(LoadDatabasePage);
+    this.navCtrl.push(LoadDatabasePage, {uid:this.uid});
   }
 
   
