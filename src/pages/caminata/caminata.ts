@@ -255,8 +255,9 @@ export class CaminataPage {
 
   dateTime(){
     //this.today = new Date();
-    var m = this.today.getMonth()+1
-    this.save_time = this.today.getDate()+'-'+m+'-'+this.today.getFullYear()
+    var myDay = new Date()
+    var m = myDay.getMonth()+1
+    this.save_time = myDay.getDate()+'-'+m+'-'+myDay.getFullYear()
     /*var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
     var min = Number(today.getMinutes());

@@ -166,8 +166,9 @@ export class AbdominalesPage {
   }
   
   dateTime(){
-    var m = this.today.getMonth()+1
-    this.save_time = this.today.getDate()+'-'+m+'-'+this.today.getFullYear()
+    var myDay = new Date()
+    var m = myDay.getMonth()+1
+    this.save_time = myDay.getDate()+'-'+m+'-'+myDay.getFullYear()
     /*var today = new Date();
     var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
