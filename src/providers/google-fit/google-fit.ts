@@ -71,6 +71,7 @@ export class GoogleFitProvider {
   }
 
   public getHeartRateFromHealth(newDate){
+    console.log('Desde google provider: '+newDate);
     return this.health.query({
       //startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
       startDate: newDate,

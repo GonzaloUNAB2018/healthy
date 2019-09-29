@@ -116,10 +116,15 @@ export class HomePage {
               text: 'Ok',
               handler: data => {
                 if (data.weight, data.height) {
-                  this.user.lastExerciceLoad = Math.trunc(Date.now()*0.5)
+                  this.user.lastExerciceLoad = Math.trunc(Date.now()*0.5);
+                  this.user.lastRateSolicitude = new Date(new Date().getTime()).toString();
                   this.user.weight = data.weight;
                   this.user.height = data.height;
                   this.afProvider.updateUserData(this.uid, this.user);
+                  if(this.platform.is('cordova')){
+                    this.accesToHealth();
+                  }
+                  
                 } else {
                   this.alertIfNotData();
                   alert.present();
@@ -133,6 +138,9 @@ export class HomePage {
         //this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
       }else{
         this.toast(this.user.name);
+        if(this.platform.is('cordova')){
+          this.accesToHealth();
+        }
       }
     });      
     
@@ -140,42 +148,7 @@ export class HomePage {
       this.requiereUpdate = requiereUpdate;
       if(this.requiereUpdate.requiere==='0.1.0.5'){
         console.log('No requiere actualizar');
-        if(this.platform.is('cordova')){
-          let loading = this.loadingCtrl.create({
-            content: 'Conectando con Google Fit'
-          });
-          loading.present();
-          setTimeout(() => {
-            this.googleFitProvider.accesToHealth()
-            .then(available=>{
-              if(available){
-                this.health=true;
-                this.googleFitProvider.getPermissionToHealthData();
-                loading.dismiss();
-              }else{
-                this.health=false;
-                var alert = this.alertCtrl.create({
-                  title: 'No habrá conexión con datos de Google Fit',
-                  buttons: [
-                    {
-                      text: 'Ok',
-                      role: 'ok',
-                      handler(){
-                        loading.dismiss();
-                      }
-                    }
-                  ]
-                });
-                alert.present();
-              }
-            })
-            .then(()=>{
-              console.log(this.health)
-            })
-          }, 2000);
-        }else{
-          alert('Sin conexión a google fit')
-        }
+        
       }else{
         this.requiereUpdateAppFunction()
       }
@@ -185,6 +158,39 @@ export class HomePage {
 
   alertIfNotData(){
     alert('Rellene los datos')
+  }
+
+  accesToHealth(){
+    let loading = this.loadingCtrl.create({
+      content: 'Conectando con Google Fit'
+    });
+    loading.present();
+    this.googleFitProvider.accesToHealth()
+    .then(available=>{
+      if(available){
+        this.health=true;
+        this.googleFitProvider.getPermissionToHealthData();
+        loading.dismiss();
+      }else{
+        this.health=false;
+        var alert = this.alertCtrl.create({
+          title: 'No habrá conexión con datos de Google Fit',
+          buttons: [
+            {
+              text: 'Ok',
+              role: 'ok',
+              handler(){
+                loading.dismiss();
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    })
+    .then(()=>{
+      console.log(this.health)
+    })
   }
 
   

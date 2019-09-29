@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
 import { ABSDbProvider } from '../../providers/ABS-db/ABSs-db';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 
-@IonicPage()
 @Component({
   selector: 'page-exercises',
   templateUrl: 'exercises.html',

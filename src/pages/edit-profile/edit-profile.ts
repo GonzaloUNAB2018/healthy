@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
 import { Observable } from 'rxjs';
 import { HomePage } from '../home/home';
 
-@IonicPage()
 @Component({
   selector: 'page-edit-profile',
   templateUrl: 'edit-profile.html',

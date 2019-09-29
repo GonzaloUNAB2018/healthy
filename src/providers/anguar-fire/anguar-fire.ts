@@ -73,15 +73,15 @@ export class AnguarFireProvider {
   }
 
   userHearthRateSetLastData(uid, rate){
-    this.afDb.database.ref('Pacientes/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/'+rate.id).set(rate);
+    this.afDb.database.ref('Google_Fit/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/'+rate.id).set(rate);
   }
 
   getUserHearthAllRates(uid){
-    return this.afDb.list('Pacientes/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/');
+    return this.afDb.list('Google_Fit/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/');
   }
 
   deleteRates(uid){
-    this.afDb.database.ref('Pacientes/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/').remove();
+    this.afDb.database.ref('Google_Fit/Pulsos_Cardiacos/'+uid+'/Hearth_Rates/').remove();
   }
 
   

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 //import { Geolocation } from '@ionic-native/geolocation';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { Stepcounter } from '@ionic-native/stepcounter';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation';
 
-@IonicPage()
 @Component({
   selector: 'page-caminata',
   templateUrl: 'caminata.html',
@@ -109,7 +108,7 @@ export class CaminataPage {
   }
 
   stopCountDown(){
-    this.excercise.id = Date.now()*0.5;
+    this.excercise.id = Math.trunc(Date.now()*0.5);
     clearInterval(this.cdown);
   }
 

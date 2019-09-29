@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { RegisterPage } from '../register/register';
 import { RecoveryPasswordPage } from '../recovery-password/recovery-password';
 
-
-@IonicPage()
 @Component({
   selector: 'page-initial',
   templateUrl: 'initial.html',

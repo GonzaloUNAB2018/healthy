@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { User } from '../../models/user';
 
-
-@IonicPage()
 @Component({
   selector: 'page-health-status-resume',
   templateUrl: 'health-status-resume.html',
@@ -92,49 +90,61 @@ export class HealthStatusResumePage {
   getHeartRate() {
     this.loadOne();
     let usr: any;
-    this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
-      usr = user;
-      console.log(usr.lastRateSolicitude);
-      if(usr.lastRateSolicitude === undefined){
-        this.newDate = new Date(new Date().getTime() - 728 * 24 * 60 * 60 * 1000); //DOS AÑOS
-      }else{
+    setTimeout(() => {
+      this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
+        usr = user;
+        console.log(usr.lastRateSolicitude);
+        /*if(usr.lastRateSolicitude === undefined){
+          this.newDate = new Date(new Date().getTime() - 728 * 24 * 60 * 60 * 1000); //DOS AÑOS
+        }else{
+          this.newDate = new Date(usr.lastRateSolicitude);
+        };*/
         this.newDate = new Date(usr.lastRateSolicitude);
-      };
-      console.log(this.newDate);
-      if(this.newDate !== undefined){
-        //this.gfH_Rate(this.newDate, usr);
-        this.googleFitProvider.getHeartRateFromHealth(this.newDate).then(rates =>{
-          this.heart_rates = rates;
-          if(this.heart_rates){
-            this.loadingData.dismiss();
-            this.totalRateList = this.heart_rates.length;
-            if(this.totalRateList>0){
-              this.pendentText = 'Existen '+this.totalRateList+' registros pendientes';
-              this.hableSync = true;
-            }else{
-              this.pendentText = 'Sin registros pendientes';
-            }
-          }else{
-            setTimeout(() => {
-              this.loadingData.dismiss();
+        console.log(this.newDate);
+        if(this.newDate !== undefined){
+          console.log('Si newDate no es indefinido: '+ this.newDate);
+          //this.gfH_Rate(this.newDate, usr);
+            this.googleFitProvider.getHeartRateFromHealth(this.newDate).then(rates =>{
+              this.heart_rates = rates;
+              console.log(this.heart_rates);
+              if(this.heart_rates){
+                this.loadingData.dismiss();
+                this.totalRateList = this.heart_rates.length;
+                if(this.totalRateList>0){
+                  this.pendentText = 'Existen '+this.totalRateList+' registros pendientes';
+                  this.hableSync = true;
+                }else{
+                  this.pendentText = 'Sin registros pendientes';
+                }
+              }
+            }).catch(e=>{
+              console.log(e)
               this.navCtrl.pop();
-              alert('Exceso de tiempo de respuesta. Intente nuevamente.')
-            }, 5000);
-          }
-        }).catch(e=>{
+              alert(e);
+            });
+            setTimeout(() => {
+              if(this.heart_rates===null){
+                this.loadingData.dismiss();
+                this.navCtrl.pop();
+                alert('Exceso de tiempo de respuesta. Intente nuevamente.');
+              }
+            }, 10000);
+        }else{
+          this.loadingData.dismiss();
+          alert('Error');
           this.navCtrl.pop();
-          alert(e);
-        })
-      };
-    });
+        }
+      });
+    }, 1000);
 
   }
 
   gfH_Rate(){
     this.loadTwo();
-    console.log(this.newDate);
-    this.googleFitProvider.getHeartRateFromHealth(this.newDate).then(rates=>{
-      this.heart_rates = rates;
+    setTimeout(() => {
+      console.log(this.newDate);
+    //this.googleFitProvider.getHeartRateFromHealth(this.newDate).then(rates=>{
+      //this.heart_rates = rates;
       if(this.heart_rates){
         this.totalRateList = this.heart_rates.length;
         console.log(this.totalRateList);
@@ -172,11 +182,12 @@ export class HealthStatusResumePage {
         };
       };
       this.hableSync = false;
-    }).catch(e=>{
+    /*}).catch(e=>{
       this.navCtrl.pop();
       this.hableSync = false;
       alert(e);
-    })
+    })*/
+    }, 1000);
   }
 
   loadOne(){

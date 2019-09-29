@@ -1,17 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
 import { HomePage } from '../home/home';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',

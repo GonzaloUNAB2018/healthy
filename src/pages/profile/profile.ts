@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { User } from '../../models/user';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -8,7 +8,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { format } from 'rut.js';
 
-@IonicPage()
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',

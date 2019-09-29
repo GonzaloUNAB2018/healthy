@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
 import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { validate } from 'rut.js';
 
-@IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
@@ -50,7 +49,7 @@ export class RegisterPage {
                       content: "Registrando Usuario...",
                     });
                     loader.present();
-                    this.user.phoneNumber = '+569'+this.user.phone;
+                    this.user.phoneNumber = '+56'+this.user.phone;
                     this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
                       this.afAuth.auth.currentUser.updateProfile({
                         displayName: this.user.name+' '+this.user.surname

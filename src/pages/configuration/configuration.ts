@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { SQLite } from '@ionic-native/sqlite';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
@@ -8,14 +8,6 @@ import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../../models/user';
 
-/**
- * Generated class for the ConfigurationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-configuration',
   templateUrl: 'configuration.html',
@@ -58,13 +50,13 @@ export class ConfigurationPage {
 
   }
 
-  deleteDatabase(){
+  deleteDatabase(uid){
     this.sqlite.deleteDatabase({
-      name: 'data.db',
+      name: uid+'_data.db',
       location: 'default' // the location field is required
     }).then(() =>{
       alert('Base de datos borrada');
-      this.createDatabase();
+      this.createDatabase(this.uid);
     })
     .catch(error =>{
       console.error(error);
@@ -86,7 +78,7 @@ export class ConfigurationPage {
         {
           text: 'OK',
           handler: () => {
-            this.deleteDatabase();
+            this.deleteDatabase(this.uid);
           }
         }
       ]
@@ -94,9 +86,9 @@ export class ConfigurationPage {
     alert.present();
   }
 
-  createDatabase(){
+  createDatabase(uid){
     this.sqlite.create({
-      name: 'data.db',
+      name: uid+'_data.db',
       location: 'default' // the location field is required
     })
     .then((db) => {
@@ -154,7 +146,7 @@ export class ConfigurationPage {
     
     this.loadingDeleteRates();
     setTimeout(() => {
-      this.user.lastRateSolicitude = new Date(new Date().getTime() - 728 * 24 * 60 * 60 * 1000).toString();
+      this.user.lastRateSolicitude = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000).toString();
       this.afService.deleteRates(this.uid);
       this.afService.updateUserData(this.uid, this.user);
       setTimeout(() => {

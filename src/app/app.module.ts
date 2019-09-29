@@ -36,24 +36,24 @@ import { AnguarFireProvider } from '../providers/anguar-fire/anguar-fire';
 //Pages
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
-import { LoginPageModule } from '../pages/login/login.module';
-import { RegisterPageModule } from '../pages/register/register.module';
-import { ResetPassPageModule } from '../pages/reset-pass/reset-pass.module';
-import { InitialPageModule } from '../pages/initial/initial.module';
-import { CaminataPageModule } from '../pages/caminata/caminata.module';
-import { SaltosPageModule } from '../pages/saltos/saltos.module';
-import { AbdominalesPageModule } from '../pages/abdominales/abdominales.module';
-import { HealthStatusResumePageModule } from '../pages/health-status-resume/health-status-resume.module';
-import { ConfigurationPageModule } from '../pages/configuration/configuration.module';
-import { LoadDatabasePageModule } from '../pages/load-database/load-database.module';
-import { ProfilePageModule } from '../pages/profile/profile.module';
+import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
+import { ResetPassPage } from '../pages/reset-pass/reset-pass';
+import { InitialPage } from '../pages/initial/initial';
+import { CaminataPage } from '../pages/caminata/caminata';
+import { SaltosPage } from '../pages/saltos/saltos';
+import { AbdominalesPage } from '../pages/abdominales/abdominales';
+import { HealthStatusResumePage } from '../pages/health-status-resume/health-status-resume';
+import { ConfigurationPage } from '../pages/configuration/configuration';
+import { LoadDatabasePage } from '../pages/load-database/load-database';
+import { ProfilePage } from '../pages/profile/profile';
 import { GoogleFitProvider } from '../providers/google-fit/google-fit';
 import { HealthDbProvider } from '../providers/health-db/health-db';
-import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module';
-import { HomePageModule } from '../pages/home/home.module';
-import { ExercisePageModule } from '../pages/exercise/exercise.module';
-import { ExercisesPageModule } from '../pages/exercises/exercises.module';
-import { RecoveryPasswordPageModule } from '../pages/recovery-password/recovery-password.module';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { HomePage } from '../pages/home/home';
+import { ExercisePage } from '../pages/exercise/exercise';
+import { ExercisesPage } from '../pages/exercises/exercises';
+import { RecoveryPasswordPage } from '../pages/recovery-password/recovery-password';
 
 
 
@@ -62,37 +62,53 @@ import { RecoveryPasswordPageModule } from '../pages/recovery-password/recovery-
     MyApp,
     AboutPage,
     ContactPage,
+    LoginPage,
+    RegisterPage,
+    ResetPassPage,
+    InitialPage,
+    CaminataPage,
+    SaltosPage,
+    AbdominalesPage,
+    ConfigurationPage,
+    LoadDatabasePage,
+    ProfilePage,
+    EditProfilePage,
+    HealthStatusResumePage,
+    HomePage,
+    ExercisePage,
+    ExercisesPage,
+    RecoveryPasswordPage,
   ],
   imports: [
     HttpClientModule,
     AngularFireModule.initializeApp(firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    LoginPageModule,
-    RegisterPageModule,
-    ResetPassPageModule,
-    InitialPageModule,
-    CaminataPageModule,
-    SaltosPageModule,
-    AbdominalesPageModule,
-    ConfigurationPageModule,
-    LoadDatabasePageModule,
-    ProfilePageModule,
-    EditProfilePageModule,
-    HealthStatusResumePageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     ProgressBarModule,
-    HomePageModule,
-    ExercisePageModule,
-    ExercisesPageModule,
-    RecoveryPasswordPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     AboutPage,
     ContactPage,
+    LoginPage,
+    RegisterPage,
+    ResetPassPage,
+    InitialPage,
+    CaminataPage,
+    SaltosPage,
+    AbdominalesPage,
+    ConfigurationPage,
+    LoadDatabasePage,
+    ProfilePage,
+    EditProfilePage,
+    HealthStatusResumePage,
+    HomePage,
+    ExercisePage,
+    ExercisesPage,
+    RecoveryPasswordPage,
   ],
   providers: [
     StatusBar,

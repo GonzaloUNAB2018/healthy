@@ -39,13 +39,10 @@ export class MyApp {
       
       this.platform.ready().then(() => {
         this.statusBar.styleDefault();
-        if(platform.is('cordova')){
-          this.createDatabase();
-        }else{
-          alert('No se crea base de datos')
-        }
         this.afAuth.auth.onAuthStateChanged(user=>{
           if(user){
+            let uid = this.afAuth.auth.currentUser.uid;
+            this.createDatabase(uid);
             this.nav.setRoot(HomePage);
           }else{
             this.nav.setRoot(InitialPage);
@@ -56,11 +53,9 @@ export class MyApp {
        
   }
 
-  enableProdMode(){}
-
-  private createDatabase(){
+  private createDatabase(uid){
     this.sqlite.create({
-      name: 'data.db',
+      name: uid+'_data.db',
       location: 'default' // the location field is required
     })
     .then((db) => {
