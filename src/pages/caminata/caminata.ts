@@ -22,6 +22,7 @@ export class CaminataPage {
   steps: number = 0;
   heading: number = 0;
   today: any;
+  save_time: string;
 
   private interval: any;
   private dataInterval: any;
@@ -38,6 +39,9 @@ export class CaminataPage {
   stepSensorTrue: string;
   formatted_time: string = '00:00';
   provider: any;
+  excercise = {
+    id: null
+  };
 
   constructor(
     public navCtrl: NavController,
@@ -105,6 +109,7 @@ export class CaminataPage {
   }
 
   stopCountDown(){
+    this.excercise.id = Date.now()/0.5;
     clearInterval(this.cdown);
   }
 
@@ -250,7 +255,9 @@ export class CaminataPage {
   }
 
   dateTime(){
-    this.today = new Date();
+    //this.today = new Date();
+    var m = this.today.getMonth()+1
+    this.save_time = this.today.getDate()+'-'+m+'-'+this.today.getFullYear()
     /*var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
     var min = Number(today.getMinutes());
@@ -275,11 +282,12 @@ export class CaminataPage {
       console.log(this.steps)
     });
     this.today = new Date();   
-    //this.dateTime();
+    this.dateTime();
     var data_steps ={
+      eid : this.excercise.id,
       id : Date.now(),
       date : this.today,
-      time: this.hour,
+      save_time: this.save_time,
       type : 'Caminata',
       steps : this.steps,
       lat : this.lat,

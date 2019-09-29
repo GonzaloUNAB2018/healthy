@@ -51,6 +51,8 @@ import { GoogleFitProvider } from '../providers/google-fit/google-fit';
 import { HealthDbProvider } from '../providers/health-db/health-db';
 import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module';
 import { HomePageModule } from '../pages/home/home.module';
+import { ExercisePageModule } from '../pages/exercise/exercise.module';
+import { ExercisesPageModule } from '../pages/exercises/exercises.module';
 
 
 
@@ -80,7 +82,9 @@ import { HomePageModule } from '../pages/home/home.module';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     ProgressBarModule,
-    HomePageModule
+    HomePageModule,
+    ExercisePageModule,
+    ExercisesPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

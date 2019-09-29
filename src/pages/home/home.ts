@@ -16,6 +16,7 @@ import { AnguarFireProvider } from '../../providers/anguar-fire/anguar-fire';
 import { ProfilePage } from '../profile/profile';
 import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
+import { ExercisesPage } from '../exercises/exercises';
 
 
 @Component({
@@ -235,6 +236,10 @@ export class HomePage {
     //alert('Página de Perfil de Usuario en desarrollo')
     //this.navCtrl.push(ProfilePage, {uid: this.uid, nickName: this.user.nickName})
     this.navCtrl.push(ProfilePage);
+  }
+
+  toExercicesList(){
+    this.navCtrl.push(ExercisesPage, {uid:this.uid});
   }
 
   toHealthPage(){
