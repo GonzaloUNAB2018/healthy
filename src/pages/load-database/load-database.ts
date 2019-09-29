@@ -225,31 +225,34 @@ export class LoadDatabasePage {
       for(var s = 0;s<this.steps_entries;s++) {
         console.log(this.steps_tasks[s].eid);
         let exer = this.steps_tasks[s].eid;
-        if(exer>this.user.lastExerciceLoad){
+        if(exer<this.user.lastExerciceLoad){
           this.afProvider.updateStepsData(this.uid, this.steps_tasks[s]);
         };
         if(s===this.steps_entries){
           this.okLoad1 = true;
+          console.log(this.okLoad1)
         }
       };
       for(var a = 0;a<this.ABSs_entries;a++) {
         console.log(this.ABS_tasks[a].eid);
         let exer = this.ABS_tasks[a].eid;
-        if(exer>this.user.lastExerciceLoad){
+        if(exer<this.user.lastExerciceLoad){
           this.afProvider.updateABSData(this.uid, this.ABS_tasks[a]);
         };
         if(a===this.ABSs_entries){
           this.okLoad2 = true;
+          console.log(this.okLoad2)
         }
       };
       for(var j = 0;j<this.jumps_entries;j++) {
         console.log(this.jump_tasks[j].eid);
         let exer = this.jump_tasks[j].eid;
-        if(exer>this.user.lastExerciceLoad){
+        if(exer<this.user.lastExerciceLoad){
           this.afProvider.updateJumpData(this.uid, this.jump_tasks[j]);
         };
         if(j===this.jumps_entries){
           this.okLoad3 = true;
+          console.log(this.okLoad3)
         }
       };
 

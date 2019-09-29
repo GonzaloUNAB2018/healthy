@@ -21,43 +21,43 @@ export class AnguarFireProvider {
   }
 
   public getSteps(uid){
-    return this.afDb.list('Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/Datos/');
+    return this.afDb.list('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/Datos/');
   }
 
   public getABSs(uid){
-    return this.afDb.list('Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/Datos/');
+    return this.afDb.list('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/Datos/');
   }
 
   public getJumps(uid){
-    return this.afDb.list('Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/Datos/');
+    return this.afDb.list('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/Datos/');
   }
 
   public deleteDataBase(uid){
-    this.afDb.database.ref('Pacientes/Ejercicios/'+uid+'/Ejercicios/').remove();
+    this.afDb.database.ref('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/').remove();
   }
 
   updateJumpInfo(uid, info){
-    this.afDb.database.ref('Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/'+info.id).update(info);
+    this.afDb.database.ref('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/'+info.id).update(info);
   }
 
   updateABSInfo(uid, info){
-    this.afDb.database.ref('Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/'+info.id).update(info);
+    this.afDb.database.ref('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/'+info.id).update(info);
   }
 
   updateStepsInfo(uid, info){
-    this.afDb.database.ref('Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/'+info.id).update(info);
+    this.afDb.database.ref('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/'+info.id).update(info);
   }
 
   updateJumpData(uid, info){
-    this.afDb.object('Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/Datos'+info.id).update(info);
+    this.afDb.object('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Saltos/Datos/'+info.eid+'/'+info.id).update(info);
   }
 
   updateABSData(uid, info){
-    this.afDb.object('Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/Datos'+info.id).update(info);
+    this.afDb.object('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Abdominales/Datos/'+info.eid+'/'+info.id).update(info);
   }
 
   updateStepsData(uid, info){
-    this.afDb.object('Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/Datos'+info.id).update(info);
+    this.afDb.object('Ejercicios_Pacientes/Ejercicios/'+uid+'/Ejercicios/Caminata/Datos/'+info.eid+'/'+info.id).update(info);
   }
 
   public requiereUpdateApp(){
