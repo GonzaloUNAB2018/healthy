@@ -199,7 +199,7 @@ export class AbdominalesPage {
         this.g_accY = orientation.y;
         this.g_accZ = orientation.z;
       }).catch();
-      this.today = new Date(); 
+      this.today = new Date().toString(); 
       this.dateTime();
       var data_ABS = {
         eid : this.excercise.id,
@@ -214,6 +214,7 @@ export class AbdominalesPage {
         giroscope_y : this.g_accY,
         giroscope_z : this.g_accZ,
       }
+      console.log(data_ABS)
       this.ABSsDbService.create(data_ABS).then(response => {
         this.ABSs_tasks.unshift( data_ABS );
       })

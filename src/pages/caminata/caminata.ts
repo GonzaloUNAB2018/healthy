@@ -280,7 +280,7 @@ export class CaminataPage {
       this.steps = steps;
       console.log(this.steps)
     });
-    this.today = new Date();   
+    this.today = new Date().toString();   
     this.dateTime();
     var data_steps ={
       eid : this.excercise.id,

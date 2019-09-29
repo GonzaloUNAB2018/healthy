@@ -7,9 +7,9 @@
     <ion-item *ngFor="let step of steps" padding>
       <p item-start class="item-text"> {{step.type}}</p> <p item-end class="item-text">{{step.save_time}} </p>
     </ion-item>
-    <ion-item-divider *ngIf="ABS">Abdominales</ion-item-divider>
-    <ion-item *ngFor="let A of ABS" padding>
-      <p item-start class="item-text"> {{A.type}}</p> <p item-end class="item-text">{{A.save_time}} </p>
+    <ion-item-divider *ngIf="abss">Abdominales</ion-item-divider>
+    <ion-item *ngFor="let abs of abss" padding>
+      <p item-start class="item-text"> {{abs.type}}</p> <p item-end class="item-text">{{abs.save_time}} </p>
     </ion-item>
     <ion-item-divider *ngIf="jumps">Saltos</ion-item-divider>
     <ion-item *ngFor="let jump of jumps" padding>

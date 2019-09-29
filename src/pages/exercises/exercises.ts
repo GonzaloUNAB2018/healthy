@@ -29,7 +29,7 @@ export class ExercisesPage {
   openJumps1: boolean = false;
   openJumps2: boolean = false;
   steps: any[];
-  ABS: any[];
+  abss: any[];
   jumps: any[];
 
   constructor(
@@ -74,13 +74,14 @@ export class ExercisesPage {
     .then(ABS_tasks => {
       this.ABS_tasks = ABS_tasks;
       if(this.ABS_tasks.length!=0){
-        this.ABS = Array.from(new Set(this.ABS_tasks.map(x=>x.eid))).map(eid=>{
+        this.abss = Array.from(new Set(this.ABS_tasks.map(x=>x.eid))).map(eid=>{
           return{
             eid: eid,
             type: this.ABS_tasks.find(type=> type.eid === eid).type,
             save_time: this.ABS_tasks.find(type=> type.eid === eid).save_time
           }
         });
+        console.log(this.abss)
         this.ABSs_entries = this.ABS_tasks.length;
         this.ABSs_entries_boolean = true;
         this.openABS1 = true
@@ -108,6 +109,7 @@ export class ExercisesPage {
             save_time: this.steps_tasks.find(type=> type.eid === eid).save_time
           }
         });
+        console.log(this.steps)
         this.steps_entries = this.steps_tasks.length;
         this.steps_entries_boolean = true;
         this.openSteps1 = true;
@@ -135,6 +137,7 @@ export class ExercisesPage {
             save_time: this.jump_tasks.find(type=> type.eid === eid).save_time
           }
         });
+        console.log(this.jumps)
         this.jumps_entries = this.jump_tasks.length;
         this.jumps_entries_boolean = true;
         this.openJumps1 = true

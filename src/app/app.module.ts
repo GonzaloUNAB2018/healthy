@@ -53,6 +53,7 @@ import { EditProfilePageModule } from '../pages/edit-profile/edit-profile.module
 import { HomePageModule } from '../pages/home/home.module';
 import { ExercisePageModule } from '../pages/exercise/exercise.module';
 import { ExercisesPageModule } from '../pages/exercises/exercises.module';
+import { RecoveryPasswordPageModule } from '../pages/recovery-password/recovery-password.module';
 
 
 
@@ -84,7 +85,8 @@ import { ExercisesPageModule } from '../pages/exercises/exercises.module';
     ProgressBarModule,
     HomePageModule,
     ExercisePageModule,
-    ExercisesPageModule
+    ExercisesPageModule,
+    RecoveryPasswordPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
