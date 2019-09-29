@@ -18,7 +18,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { Gyroscope } from '@ionic-native/gyroscope'
 import { Health } from '@ionic-native/health';
 import { Camera } from '@ionic-native/camera';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+//import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 
 //FIREBASE
 import {firebase} from './firebase.module';
@@ -129,7 +129,7 @@ import { RecoveryPasswordPage } from '../pages/recovery-password/recovery-passwo
     GoogleFitProvider,
     HealthDbProvider,
     Camera,
-    BackgroundGeolocation
+    //BackgroundGeolocation
   ]
 })
 export class AppModule {}

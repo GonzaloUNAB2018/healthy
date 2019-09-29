@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
-//import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
 import { Stepcounter } from '@ionic-native/stepcounter';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation';
+//import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation';
 
 @Component({
   selector: 'page-caminata',
@@ -42,16 +42,18 @@ export class CaminataPage {
     id: null
   };
 
+  watch : any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    //private geolocation: Geolocation,
+    private geolocation: Geolocation,
     private stepsDbService: StepsDbProvider,
     private stepcounter: Stepcounter,
     private platform: Platform,
     private backgroundMode: BackgroundMode,
-    private backgroundGeolocation: BackgroundGeolocation
+    //private backgroundGeolocation: BackgroundGeolocation
     )
     {
       
@@ -113,7 +115,20 @@ export class CaminataPage {
   }
 
   getGeolocationData(){
-    let config : BackgroundGeolocationConfig  = {
+
+    this.watch = this.geolocation.watchPosition();
+    this.watch.subscribe(location => {
+      this.lat = location.latitude;
+      this.lng = location.longitude;
+      this.alt = location.altitude;
+      if(location.speed===undefined||location.speed===null){
+        this.speed = 0;
+      }else{
+        this.speed = location.speed;
+      }
+    });
+
+    /*let config : BackgroundGeolocationConfig  = {
       interval: 500,
       notificationTitle: 'Registro de geolocalización',
       notificationText: 'Mientras camina se ejecuta el registro',
@@ -133,7 +148,7 @@ export class CaminataPage {
           this.provider = location.provider;
       });
     });
-    this.backgroundGeolocation.start();
+    this.backgroundGeolocation.start();*/
   }
 
   start() {
@@ -196,7 +211,8 @@ export class CaminataPage {
     if(this.platform.is('cordova')){
       this.stopSteps();
       this.stopNotify();
-      this.backgroundGeolocation.stop();
+      //this.backgroundGeolocation.stop();
+      this.watch.unsubscribe();
     }
   }
 
