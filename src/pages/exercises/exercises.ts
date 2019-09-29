@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { JumpDbProvider } from '../../providers/jump-db/jump-db';
 import { ABSDbProvider } from '../../providers/ABS-db/ABSs-db';
 import { StepsDbProvider } from '../../providers/steps-db/steps-db';
@@ -34,6 +34,7 @@ export class ExercisesPage {
 
   constructor(
     public navCtrl: NavController,
+    public platform: Platform,
     public navParams: NavParams,
     public jumpDbService: JumpDbProvider,
     public ABSDbService: ABSDbProvider,
@@ -48,9 +49,24 @@ export class ExercisesPage {
   }
 
   getAll(){
-    this.getABS();
-    this.getJumps();
-    this.getSteps();
+    if(this.platform.is('cordova')){
+      this.getABS();
+      this.getJumps();
+      this.getSteps();
+    }else{
+      this.steps = [
+        {
+          eui:1,
+          type:'Caminata',
+          save_time:'1-9-2019'
+        },
+        {
+          eui:2,
+          type:'Caminata',
+          save_time:'1-9-2019'
+        }
+      ]
+    }
   }
 
   getABS(){
@@ -58,6 +74,13 @@ export class ExercisesPage {
     .then(ABS_tasks => {
       this.ABS_tasks = ABS_tasks;
       if(this.ABS_tasks.length!=0){
+        this.ABS = Array.from(new Set(this.ABS_tasks.map(x=>x.eid))).map(eid=>{
+          return{
+            eid: eid,
+            type: this.ABS_tasks.find(type=> type.eid === eid).type,
+            save_time: this.ABS_tasks.find(type=> type.eid === eid).save_time
+          }
+        });
         this.ABSs_entries = this.ABS_tasks.length;
         this.ABSs_entries_boolean = true;
         this.openABS1 = true
@@ -78,16 +101,13 @@ export class ExercisesPage {
     .then(steps_tasks => {
       this.steps_tasks = steps_tasks;
       if(this.steps_tasks.length!=0){
-        //console.table(this.steps_tasks);
-        //this.steps = [new Set(this.steps_tasks.map(x=>x.eid))];
         this.steps = Array.from(new Set(this.steps_tasks.map(x=>x.eid))).map(eid=>{
           return{
             eid: eid,
             type: this.steps_tasks.find(type=> type.eid === eid).type,
             save_time: this.steps_tasks.find(type=> type.eid === eid).save_time
           }
-        })
-        console.table(this.steps);
+        });
         this.steps_entries = this.steps_tasks.length;
         this.steps_entries_boolean = true;
         this.openSteps1 = true;
@@ -108,6 +128,13 @@ export class ExercisesPage {
     .then(jump_tasks => {
       this.jump_tasks = jump_tasks;
       if(this.jump_tasks.length!=0){
+        this.jumps = Array.from(new Set(this.jump_tasks.map(x=>x.eid))).map(eid=>{
+          return{
+            eid: eid,
+            type: this.jump_tasks.find(type=> type.eid === eid).type,
+            save_time: this.jump_tasks.find(type=> type.eid === eid).save_time
+          }
+        });
         this.jumps_entries = this.jump_tasks.length;
         this.jumps_entries_boolean = true;
         this.openJumps1 = true

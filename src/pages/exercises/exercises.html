@@ -1,22 +1,20 @@
-<!--
-  Generated template for the ExercisesPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Exercises</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding>
-
-  <ion-card *ngFor="let step of steps" padding>
-    <p> {{step.type}} {{step.save_time}} </p>
-  </ion-card>
+  <ion-navbar>
+    <ion-title>Ejercicios Ejecutados</ion-title>
+  </ion-navbar>
+  <ion-list inset>
+    <ion-item-divider>Caminata</ion-item-divider>
+    <ion-item *ngFor="let step of steps" padding>
+      <p item-start class="item-text"> {{step.type}}</p> <p item-end class="item-text">{{step.save_time}} </p>
+    </ion-item>
+    <ion-item-divider>Abdominales</ion-item-divider>
+    <ion-item *ngFor="let A of ABS" padding>
+      <p item-start class="item-text"> {{A.type}}</p> <p item-end class="item-text">{{A.save_time}} </p>
+    </ion-item>
+    <ion-item-divider>Saltos</ion-item-divider>
+    <ion-item *ngFor="let jump of jumps" padding>
+      <p item-start class="item-text"> {{jump.type}}</p> <p item-end class="item-text">{{jump.save_time}} </p>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

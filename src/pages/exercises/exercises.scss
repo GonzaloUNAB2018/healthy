@@ -1,3 +1,38 @@
 page-exercises {
 
+    ion-content{
+        //background-color: darkslategrey;
+        //background-image: url(../assets/imgs/fondo.jpg);
+        background-size: 130%;
+        background-position: center
+    }
+
+    .back-button-icon.icon.icon-md.back-button-icon-md.ion-md-arrow-back{
+        color: color($colors, light);
+    }
+
+    .toolbar-title.toolbar-title-md{
+        text-align: center;
+        color: color($colors, light);
+    }
+
+    .toolbar-background.toolbar-background-md{
+        background-color: transparent;
+    }
+
+    .item-text{
+        color: color($colors, light);
+        font-size: 20px;
+    }
+
+    .list.list-md,
+    .item.item-block.item-md{
+        background-color: transparent;
+    }
+
+    .content.content-md{
+        background-color: darkslategrey;
+    }
+
+
 }
