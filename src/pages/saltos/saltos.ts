@@ -27,6 +27,12 @@ export class SaltosPage {
   date: string;
   hour: string;
   w: any;
+  public workstarted: boolean = false;
+  today: any;
+  save_time: string;
+  excercise = {
+    id: null
+  };
 
   constructor(
     public navCtrl: NavController, 
@@ -46,9 +52,42 @@ export class SaltosPage {
     this.countDown()
   }
 
-  ionViewWillLeave(){
-    //this.stop();
-  }
+  ionViewCanLeave(): boolean{
+    console.log(this.workstarted)
+    if(this.workstarted===true){
+      return false;
+    }else if(this.workstarted===false){
+      return true;
+    };
+  };
+
+  stopAll(){
+    this.workstarted = false;
+    this.stop();
+    setTimeout(() => {
+      this.navCtrl.popToRoot();
+    }, 1000);
+  };
+
+  countDown(){
+    this.cdown_ok = true;
+    this.cdown = setInterval(()=>{
+      this.cdown_ss=this.cdown_ss-1;
+      if(this.cdown_ss<1){
+        this.stopCountDown();
+        this.start();
+        if(this.platform.is('cordova')){
+          this.initJump();
+        }
+        this.cdown_ok=false;
+      }
+    },1000);
+  };
+
+  stopCountDown(){
+    this.excercise.id = Date.now()/0.5;
+    clearInterval(this.cdown);
+  };
 
   start() {
     this.time = '00:00'
@@ -56,24 +95,18 @@ export class SaltosPage {
       this.seconds++;
       this.time = this.getTimeFormatted();
       document.getElementById('time').innerHTML=this.time;
-      this.backgroundMode.configure({
-        title: '¡Saltos!',
-        text: this.time+' Presione notificación para continuar',
-        color: 'primary',
-        hidden: false,
-        bigText: true,
-      });
+      if(this.platform.is('cordova')){
+        this.backgroundMode.configure({
+          title: '¡Saltos!',
+          text: this.time+' Presione notificación para continuar',
+          color: 'primary',
+          hidden: false,
+          bigText: true,
+        });
+      };
     }, 1000);
     this.bgNotify();
-  }
-
-  stop() {
-    this.stopNotify();
-    window.clearInterval(this.interval);
-    this.seconds = 0;
-    this.stopJump();
-    this.navCtrl.setRoot(HomePage)
-  }
+  };
 
   bgNotify(){
     
@@ -84,13 +117,28 @@ export class SaltosPage {
       }else{
       }
     }
-  }
+  };
 
   stopNotify(){
     if(this.platform.is('cordova')){
       this.backgroundMode.disable();
     }
   }
+
+  
+
+  stop() {
+    this.stopNotify();
+    window.clearInterval(this.interval);
+    this.seconds = 0;
+    if(this.platform.is('cordova')){
+      this.stopJump();
+    }    
+  };
+
+  
+
+  
 
   getTimeFormatted() {
     var hours   = Math.floor(this.seconds / 3600);
@@ -121,25 +169,14 @@ export class SaltosPage {
     return formatted_time;
   }
 
-  countDown(){
-    this.cdown_ok = true;
-    this.cdown = setInterval(()=>{
-      this.cdown_ss=this.cdown_ss-1;
-      if(this.cdown_ss<1){
-        this.stopCountDown();
-        this.start();
-        this.initJump();
-        this.cdown_ok=false;
-      }
-    },1000);
-  }
+  
 
-  stopCountDown(){
-    clearInterval(this.cdown);
-  }
+  
 
   dateTime(){
-    var today = new Date();
+    var m = this.today.getMonth()+1
+    this.save_time = this.today.getDate()+'-'+m+'-'+this.today.getFullYear()
+    /*var today = new Date();
     var seg = Number(today.getSeconds());
     var ss = String(today.getSeconds());
     var min = Number(today.getMinutes());
@@ -155,7 +192,7 @@ export class SaltosPage {
     if(seg>=0&&seg<10){
       ss = 0+ss
     };
-    this.hour = hh+':'+mi+':'+ss;
+    this.hour = hh+':'+mi+':'+ss;*/
 
   }
 
@@ -165,11 +202,13 @@ export class SaltosPage {
       this.l_accX = acceleration.x;
       this.l_accY = acceleration.y;
       this.l_accZ = acceleration.z;
+      this.today = new Date().toString(); 
       this.dateTime();
       var data_jump = {
+        eid : this.excercise.id,
         id : Date.now(),
-        date : this.date,
-        time: this.hour,
+        date : this.today,
+        save_time: this.save_time,
         type : 'Saltos',
         x : this.l_accX,
         y : this.l_accY,

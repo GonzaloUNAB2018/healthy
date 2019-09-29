@@ -15,12 +15,12 @@ export class ABSDbProvider {
    }
  
    create(ABSs_task: any){
-     let sql_ABSs = 'INSERT INTO ABSs_tasks(id, date, time, type, x, y, z,giroscope_x,giroscope_y,giroscope_z) VALUES(?,?,?,?,?,?,?,?,?,?)';
-     return this.ABSsdb.executeSql(sql_ABSs, [ABSs_task.id, ABSs_task.date, ABSs_task.time, ABSs_task.type, ABSs_task.x, ABSs_task.y, ABSs_task.z, ABSs_task.giroscope_x, ABSs_task.giroscope_y, ABSs_task.giroscope_z]);
+     let sql_ABSs = 'INSERT INTO ABSs_tasks(eid, id, date, save_time, type, x, y, z,giroscope_x,giroscope_y,giroscope_z) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
+     return this.ABSsdb.executeSql(sql_ABSs, [ABSs_task.eid, ABSs_task.id, ABSs_task.date, ABSs_task.save_time, ABSs_task.type, ABSs_task.x, ABSs_task.y, ABSs_task.z, ABSs_task.giroscope_x, ABSs_task.giroscope_y, ABSs_task.giroscope_z]);
    }
  
    createTable(){
-     let sql_ABSs = 'CREATE TABLE IF NOT EXISTS ABSs_tasks(id NUMBER, date TEXT, time TEXT, type TEXT, x NUMBER, y NUMBER, z NUMBER, giroscope_x NUMBER, giroscope_y NUMBER, giroscope_z NUMBER)';
+     let sql_ABSs = 'CREATE TABLE IF NOT EXISTS ABSs_tasks(eid NUMBER, id NUMBER, date TEXT, save_time TEXT, type TEXT, x NUMBER, y NUMBER, z NUMBER, giroscope_x NUMBER, giroscope_y NUMBER, giroscope_z NUMBER)';
      return this.ABSsdb.executeSql(sql_ABSs, []);
    }
  
@@ -42,9 +42,9 @@ export class ABSDbProvider {
      .catch(error => Promise.reject(error));
    }
  
-   /*update(ABSs_task: any){
-     let sql_ABSs = 'UPDATE ABSs_tasks SET id=?, date=?, time=?, type=?, x=?, y=?, WHERE z=?';
-     return this.ABSsdb.executeSql(sql_ABSs, [ABSs_task.id, ABSs_task.date, ABSs_task.time, ABSs_task.type, ABSs_task.x, ABSs_task.y, ABSs_task.z]);
-   }*/
+   update(ABSs_task: any){
+     let sql_ABSs = 'UPDATE ABSs_tasks SET eid=?, id=?, date=?, save_time=?, type=?, x=?, y=?, WHERE z=?';
+     return this.ABSsdb.executeSql(sql_ABSs, [ABSs_task.eid, ABSs_task.id, ABSs_task.date, ABSs_task.save_time, ABSs_task.type, ABSs_task.x, ABSs_task.y, ABSs_task.z]);
+   }
 
 }
