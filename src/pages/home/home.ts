@@ -17,6 +17,7 @@ import { ProfilePage } from '../profile/profile';
 import { HealthStatusResumePage } from '../health-status-resume/health-status-resume';
 import { GoogleFitProvider } from '../../providers/google-fit/google-fit';
 import { ExercisesPage } from '../exercises/exercises';
+import { ABSDbProvider } from '../../providers/ABS-db/ABSs-db';
 
 
 @Component({
@@ -74,6 +75,7 @@ export class HomePage {
     public tasksService: TasksService,
     public stepsDbService: StepsDbProvider,
     public jumpDbService: JumpDbProvider,
+    public ABSDbService: ABSDbProvider,
     public sqlite: SQLite,
     public afProvider: AnguarFireProvider,
     public googleFitProvider: GoogleFitProvider
@@ -82,78 +84,36 @@ export class HomePage {
       
   }
 
-  ionViewDidLoad(){
-    this.user.nickName = null;
-    this.user.weight = null;
-    this.user.height = null;
-    this.uid = this.afUser.uid;
-    this.afProvider.getUserInfo(this.uid).valueChanges().subscribe(user=>{
-      let usr : any = user
-      this.user.name = usr.name;
-      this.user.weight = usr.weight;
-      this.user.height = usr.height;
-      console.log(user);
-      if(
-        !this.user.weight||
-        !this.user.height){
-        //var edit : boolean = true;
-        const alert = this.alertCtrl.create({
-          title: 'Agregue su peso y altura',
-          inputs: [
-            {
-              name: 'weight',
-              placeholder: 'Peso en Kg',
-              type: 'number'
-            },
-            {
-              name: 'height',
-              placeholder: 'Altura en metros',
-              type: 'number'
-            }
-          ],
-          buttons: [
-            {
-              text: 'Ok',
-              handler: data => {
-                if (data.weight, data.height) {
-                  this.user.lastExerciceLoad = Math.trunc(Date.now()*0.5);
-                  this.user.lastRateSolicitude = new Date(new Date().getTime()).toString();
-                  this.user.weight = data.weight;
-                  this.user.height = data.height;
-                  this.afProvider.updateUserData(this.uid, this.user);
-                  if(this.platform.is('cordova')){
-                    this.accesToHealth();
-                  }
-                  
-                } else {
-                  this.alertIfNotData();
-                  alert.present();
-                  return false;
-                }
-              }
-            }
-          ]
-        });
-        alert.present();
-        //this.navCtrl.setRoot(EditProfilePage, {edit:edit, uid: this.uid});
-      }else{
-        this.toast(this.user.name);
-        if(this.platform.is('cordova')){
-          this.accesToHealth();
-        }
-      }
-    });      
-    
+  ionViewDidEnter(){
+    if(this.platform.is('cordova')){
+      this.accesToHealth();
+      this.createDatabase(this.afUser.uid);
+    };
+    this.addDataUser();
     this.afProvider.requiereUpdateApp().valueChanges().subscribe(requiereUpdate=>{
       this.requiereUpdate = requiereUpdate;
       if(this.requiereUpdate.requiere==='0.1.0.6'){
         console.log('No requiere actualizar');
-        
       }else{
         this.requiereUpdateAppFunction()
       }
-    });
-    
+    });    
+  }
+
+  addDataUser(){
+    this.afProvider.getUserInfo(this.afUser.uid).valueChanges().subscribe(user=>{
+      let usr : any = user;
+      this.user.lastExerciceLoad = usr.lastExerciceLoad;
+      this.user.lastRateSolicitude = usr.lastRateSolicitude;
+      if(user){
+        this.toast(this.afUser.displayName);
+        if(this.user.lastExerciceLoad===undefined&&this.user.lastRateSolicitude===undefined){
+          this.user.lastExerciceLoad = Math.trunc(Date.now()*0.5);
+          this.user.lastRateSolicitude = new Date(new Date().getTime()).toString();
+          this.afProvider.updateUserData(this.uid, this.user);
+        };
+      }
+    });  
   }
 
   alertIfNotData(){
@@ -186,7 +146,7 @@ export class HomePage {
           ]
         });
         alert.present();
-      }
+      };
     })
     .then(()=>{
       console.log(this.health)
@@ -226,10 +186,6 @@ export class HomePage {
            message: 'Bienvenido '+nickName,
            duration: 2000,
            position: 'bottom'
-         });
-      
-         toast.onDidDismiss(() => {
-           console.log('It is Ok');
          });
       
          toast.present();
@@ -312,6 +268,22 @@ export class HomePage {
   
   loadDb(){
     this.navCtrl.push(LoadDatabasePage, {uid:this.uid});
+  }
+
+  createDatabase(uid){
+    this.sqlite.create({
+      name: uid+'_data.db',
+      location: 'default' // the location field is required
+    })
+    .then((db) => {
+      this.jumpDbService.setDatabase(db);
+      this.stepsDbService.setDatabase(db);
+      this.ABSDbService.setDatabase(db);
+      return this.jumpDbService.createTable() && this.stepsDbService.createTable() && this.ABSDbService.createTable();
+    })
+    .catch(error =>{
+      console.error(error);
+    });
   }
 
   

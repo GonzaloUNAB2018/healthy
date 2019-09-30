@@ -45,7 +45,10 @@ export class LoginPage {
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error=>{
-        console.log(error)
+        loader.dismiss();
+        console.log(error);
+        alert(error);
+        this.navCtrl.pop();
       })
     }
   }

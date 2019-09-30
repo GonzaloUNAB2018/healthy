@@ -24,11 +24,19 @@
     </ion-item>
     <ion-item padding-left>
       <ion-label floating>RUN</ion-label>
-      <ion-input type="number" placeholder="RUN" [(ngModel)]="user.run" maxlength="9"></ion-input>
+      <ion-input type="number" placeholder="RUN" [(ngModel)]="user.run" max="9"></ion-input>
+    </ion-item>
+    <ion-item padding-left>
+      <ion-label floating>Peso (Kg)</ion-label>
+      <ion-input type="number" placeholder="Peso (Kg)" [(ngModel)]="user.weight"></ion-input>
+    </ion-item>
+    <ion-item padding-left>
+      <ion-label floating>Altura (Mts)</ion-label>
+      <ion-input type="number" placeholder="Altura (Mts)" [(ngModel)]="user.height"></ion-input>
     </ion-item>
     <ion-item padding-left>
       <ion-label floating>Teléfono (9 números)</ion-label>
-      <ion-input type="number" placeholder="Teléfono (9 números)" [(ngModel)]="user.phone" maxlength="9"></ion-input>
+      <ion-input type="number" placeholder="Teléfono (9 números)" [(ngModel)]="user.phone" max="9"></ion-input>
     </ion-item>
     <ion-item padding-left>
       <ion-label floating>Email</ion-label>

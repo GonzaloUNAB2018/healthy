@@ -27,19 +27,11 @@ export class RegisterPage {
     console.log('ionViewDidLoad RegisterPage');
   }
 
-  ionViewCanLeave(): boolean{
-    if(this.changePage === true){
-       return true;
-     } else if(this.changePage === false) {
-       return false;
-     }
-   }
-
   registre(){
     if(this.user.email != null){
       if(this.user.password != null){
         if(this.user.confirm_password != null){
-          if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone){
+          if(this.user.name&&this.user.surname&&this.user.dateBirth&&this.user.sex&&this.user.phone&&this.user.weight&&this.user.height){
             if(this.user.phone.toString().length >= 9){
               if(this.user.run){
                 if(validate(this.user.run)){
@@ -52,7 +44,7 @@ export class RegisterPage {
                     this.user.phoneNumber = '+56'+this.user.phone;
                     this.afAuth.auth.createUserWithEmailAndPassword(this.user.email, this.user.password).then(user=>{
                       this.afAuth.auth.currentUser.updateProfile({
-                        displayName: this.user.name+' '+this.user.surname
+                        displayName: this.user.name
                       });
                       if(user){
                         this.user.uid = this.afAuth.auth.currentUser.uid;

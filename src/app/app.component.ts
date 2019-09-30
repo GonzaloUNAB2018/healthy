@@ -30,46 +30,21 @@ export class MyApp {
     public stepsDbService: StepsDbProvider,
     public jumpDbService: JumpDbProvider,
     public ABSDbService: ABSDbProvider,
-    public sqlite: SQLite,
+    //public sqlite: SQLite,
     private afAuth: AngularFireAuth,
     
     ) {
-      
-      
-      
       this.platform.ready().then(() => {
         this.statusBar.styleDefault();
         this.afAuth.auth.onAuthStateChanged(user=>{
           if(user){
-            let uid = this.afAuth.auth.currentUser.uid;
-            this.createDatabase(uid);
             this.nav.setRoot(HomePage);
           }else{
             this.nav.setRoot(InitialPage);
           }
         });
-    });
-
-       
-  }
-
-  private createDatabase(uid){
-    this.sqlite.create({
-      name: uid+'_data.db',
-      location: 'default' // the location field is required
-    })
-    .then((db) => {
-      this.jumpDbService.setDatabase(db);
-      this.stepsDbService.setDatabase(db);
-      this.ABSDbService.setDatabase(db);
-      return this.jumpDbService.createTable() && this.stepsDbService.createTable() && this.ABSDbService.createTable();
-    })
-    .then(() =>{
-      this.splashScreen.hide();
-      //this.rootPage = 'HomePage';
-    })
-    .catch(error =>{
-      console.error(error);
+        this.splashScreen.hide();
     });
   }
+
 }
